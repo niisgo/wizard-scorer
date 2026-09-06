@@ -1,0 +1,89 @@
+/* Design-Tokens: eine dunkle Grundpalette (Tisch am Abend) und eine helle
+   Variante. Alle Farben leben hier, damit die restlichen Stylesheets nur noch
+   auf Variablen zugreifen. */
+
+:root {
+  color-scheme: dark;
+
+  --bg: #0e0b1a;
+  --bg-glow: #1b1038;
+  --surface: #171330;
+  --surface-2: #211b3f;
+  --surface-3: #2c2451;
+  --border: #342c5c;
+  --border-soft: #272052;
+
+  --text: #f4f2ff;
+  --text-muted: #a79fd0;
+  --text-faint: #7a71a8;
+
+  --primary: #8b5cf6;
+  --primary-strong: #7c3aed;
+  --primary-soft: #2a1f52;
+  --on-primary: #ffffff;
+
+  --accent: #fbbf24;
+  --accent-soft: #3a2d10;
+
+  --good: #34d399;
+  --good-soft: #10382c;
+  --bad: #fb7185;
+  --bad-soft: #401a26;
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-md: 0 8px 24px -8px rgb(0 0 0 / 0.6);
+  --shadow-lg: 0 20px 48px -16px rgb(0 0 0 / 0.7);
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 999px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+  --font-numeric: ui-rounded, "SF Pro Rounded", "Segoe UI", Roboto, sans-serif;
+
+  --app-max: 620px;
+  --tap: 48px;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --bg: #f6f4fb;
+  --bg-glow: #e9e2ff;
+  --surface: #ffffff;
+  --surface-2: #f2eefc;
+  --surface-3: #e7e0f8;
+  --border: #ddd5f0;
+  --border-soft: #e8e2f6;
+
+  --text: #1c1533;
+  --text-muted: #5f5686;
+  --text-faint: #8d85ad;
+
+  --primary: #7c3aed;
+  --primary-strong: #6d28d9;
+  --primary-soft: #ece3ff;
+  --on-primary: #ffffff;
+
+  --accent: #b45309;
+  --accent-soft: #fdf0d5;
+
+  --good: #047857;
+  --good-soft: #d9f5ea;
+  --bad: #be123c;
+  --bad-soft: #fde2e7;
+
+  --shadow-sm: 0 1px 2px rgb(28 21 51 / 0.08);
+  --shadow-md: 0 8px 24px -10px rgb(28 21 51 / 0.22);
+  --shadow-lg: 0 20px 48px -20px rgb(28 21 51 / 0.28);
+}
