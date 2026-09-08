@@ -1,0 +1,253 @@
+/* Wiederverwendbare Bausteine. Alle Tap-Ziele sind mindestens --tap gross,
+   damit sich die App am Tisch mit dem Daumen bedienen laesst. */
+
+/* --- Topbar -------------------------------------------------------------- */
+
+.topbar__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 40px;
+}
+
+.topbar__titles {
+  flex: 1;
+  min-width: 0;
+}
+
+.topbar__title {
+  font-size: 1.25rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.topbar__subtitle {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}
+
+.iconbtn {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  border-radius: var(--radius-full);
+  color: var(--text);
+  background: var(--surface-2);
+  transition: background 0.15s ease;
+}
+
+.iconbtn:hover {
+  background: var(--surface-3);
+}
+
+/* --- Buttons ------------------------------------------------------------- */
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  width: 100%;
+  min-height: 54px;
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-md);
+  font-size: 1.0625rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  text-align: center;
+  transition:
+    transform 0.12s ease,
+    filter 0.15s ease,
+    background 0.15s ease;
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.985);
+}
+
+.btn:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
+.btn--primary {
+  color: var(--on-primary);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-strong) 100%);
+  box-shadow: var(--shadow-md);
+}
+
+.btn--primary:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.btn--ghost {
+  color: var(--text);
+  background: var(--surface-2);
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+
+.btn--ghost:hover:not(:disabled) {
+  background: var(--surface-3);
+}
+
+.btn--quiet {
+  min-height: var(--tap);
+  color: var(--text-muted);
+  font-weight: 550;
+  font-size: 0.9375rem;
+}
+
+.btn--quiet:hover:not(:disabled) {
+  color: var(--text);
+}
+
+.btn--danger {
+  color: var(--bad);
+  background: var(--bad-soft);
+}
+
+/* --- Karten -------------------------------------------------------------- */
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: inset 0 0 0 1px var(--border-soft), var(--shadow-sm);
+}
+
+.card__title {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+/* --- Hinweise ------------------------------------------------------------ */
+
+.note {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: 0.9375rem;
+  background: var(--surface-2);
+  color: var(--text-muted);
+}
+
+.note--error {
+  background: var(--bad-soft);
+  color: var(--bad);
+  font-weight: 600;
+}
+
+.note--good {
+  background: var(--good-soft);
+  color: var(--good);
+  font-weight: 600;
+}
+
+/* --- Zahlenraster (Ansagen und Stiche) ----------------------------------- */
+
+.numgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(56px, 1fr));
+  gap: var(--space-2);
+}
+
+.numgrid__cell {
+  min-height: var(--tap);
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  font-family: var(--font-numeric);
+  font-size: 1.125rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  background: var(--surface-2);
+  box-shadow: inset 0 0 0 1px var(--border);
+  transition:
+    transform 0.1s ease,
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.numgrid__cell:active:not(:disabled) {
+  transform: scale(0.93);
+}
+
+.numgrid__cell[aria-checked="true"] {
+  color: var(--on-primary);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-strong) 100%);
+  box-shadow: var(--shadow-md);
+}
+
+.numgrid__cell:disabled {
+  color: var(--text-faint);
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--border-soft);
+  text-decoration: line-through;
+  cursor: not-allowed;
+}
+
+/* --- Eingabefelder ------------------------------------------------------- */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.field__label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.input {
+  width: 100%;
+  min-height: var(--tap);
+  padding: var(--space-3) var(--space-4);
+  border: none;
+  border-radius: var(--radius-md);
+  /* 16px verhindert den Auto-Zoom von iOS beim Fokus. */
+  font-size: 1rem;
+  background: var(--surface-2);
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+
+.input::placeholder {
+  color: var(--text-faint);
+}
+
+.input:focus {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--primary);
+}
+
+/* --- Zeile mit Wert ------------------------------------------------------ */
+
+.statrow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-height: 40px;
+}
+
+.statrow__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.statrow__value {
+  flex: none;
+  font-family: var(--font-numeric);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}

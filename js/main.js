@@ -1,19 +1,17 @@
-/* Einstiegspunkt. Haelt die Referenzen auf die drei Layout-Bereiche und
-   rendert den aktuellen Screen. Die eigentlichen Screens kommen spaeter. */
+/* Einstiegspunkt: Screens registrieren und den ersten anzeigen. */
 
-const root = {
-  topbar: document.getElementById("topbar"),
-  screen: document.getElementById("screen"),
-  actionbar: document.getElementById("actionbar"),
-};
+import { el } from "./dom.js";
+import { go, register } from "./router.js";
+import { namesScreen } from "./screens/names.js";
+import { startScreen } from "./screens/start.js";
 
-function render() {
-  root.topbar.innerHTML = "";
-  root.actionbar.innerHTML = "";
-  root.screen.innerHTML = `
-    <h1>Wizard Scorer</h1>
-    <p>Der digitale Punkteblock wird gerade gebaut.</p>
-  `;
-}
+register("start", startScreen);
+register("names", namesScreen);
 
-render();
+// Platzhalter, bis der Runden-Screen steht.
+register("deal", () => ({
+  title: "Runde 1",
+  content: [el("p", { text: "Der Runden-Ablauf kommt als naechstes." })],
+}));
+
+go("start");
