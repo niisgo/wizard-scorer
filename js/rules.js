@@ -1,5 +1,5 @@
 /* Die Spielregeln von Wizard als reine Funktionen.
-   Kein DOM, kein State - damit sich alles hier direkt testen laesst. */
+   Kein DOM, kein State - damit sich alles hier direkt testen lässt. */
 
 /** Ein Wizard-Blatt hat 60 Karten (4x1-13, 4 Zauberer, 4 Narren). */
 export const DECK_SIZE = 60;
@@ -49,7 +49,7 @@ export function dealerIndex(round, playerCount) {
 
 /**
  * Angesagt wird links vom Geber beginnend - der Geber ist also zuletzt dran
- * und traegt damit die "es darf nicht aufgehen"-Beschraenkung.
+ * und trägt damit die "es darf nicht aufgehen"-Beschränkung.
  *
  * @param {number} round 1-basiert
  * @param {number} playerCount
@@ -77,8 +77,8 @@ export function bidSumIsAllowed(bids, cards) {
 }
 
 /**
- * Welche Zahl ist fuer den letzten Ansagenden gesperrt? Genau die, mit der die
- * Runde aufgehen wuerde. Liegt sie ausserhalb von 0..cards, ist nichts
+ * Welche Zahl ist für den letzten Ansagenden gesperrt? Genau die, mit der die
+ * Runde aufgehen würde. Liegt sie außerhalb von 0..cards, ist nichts
  * gesperrt (dann haben die anderen bereits zu viel angesagt).
  *
  * @param {number} cards Karten in dieser Runde
@@ -91,13 +91,13 @@ export function forbiddenBid(cards, previousBids) {
 }
 
 /**
- * Punkte eines Spielers fuer eine Runde nach offiziellen Regeln:
+ * Punkte eines Spielers für eine Runde nach offiziellen Regeln:
  * Ansage getroffen  -> 20 Punkte + 10 pro geholtem Stich.
  * Ansage verfehlt   -> 10 Minuspunkte pro Stich Abweichung (nach oben wie
  *                      nach unten).
  *
  * @param {number} bid angesagte Stiche
- * @param {number} tricks tatsaechlich geholte Stiche
+ * @param {number} tricks tatsächlich geholte Stiche
  * @returns {number}
  */
 export function roundScore(bid, tricks) {
@@ -108,7 +108,7 @@ export function roundScore(bid, tricks) {
 }
 
 /**
- * Punkte aller Spieler fuer eine Runde.
+ * Punkte aller Spieler für eine Runde.
  *
  * @param {number[]} bids
  * @param {number[]} tricks
@@ -119,7 +119,7 @@ export function scoreRound(bids, tricks) {
 }
 
 /**
- * Die Stiche einer Runde muessen exakt aufgehen - es gibt nicht mehr und nicht
+ * Die Stiche einer Runde müssen exakt aufgehen - es gibt nicht mehr und nicht
  * weniger Stiche als Karten.
  *
  * @param {number[]} tricks
@@ -131,7 +131,7 @@ export function trickSumIsValid(tricks, cards) {
 }
 
 /**
- * Laufende Gesamtpunkte je Spieler ueber alle bereits gewerteten Runden.
+ * Laufende Gesamtpunkte je Spieler über alle bereits gewerteten Runden.
  *
  * @param {number} playerCount
  * @param {{scores: number[]}[]} playedRounds
@@ -149,7 +149,7 @@ export function totalScores(playerCount, playedRounds) {
 }
 
 /**
- * Platzierung nach Punkten. Gleichstand teilt sich den Platz, die naechste
+ * Platzierung nach Punkten. Gleichstand teilt sich den Platz, die nächste
  * Platzierung springt entsprechend weiter (1, 2, 2, 4).
  *
  * @param {number[]} totals

@@ -20,7 +20,7 @@ import {
 
 const NAMES = ["Nico", "Lea", "Jon"];
 
-/** Spielt eine komplette Runde durch und gibt die neue Partie zurueck. */
+/** Spielt eine komplette Runde durch und gibt die neue Partie zurück. */
 function playRound(game, bids, tricks) {
   let next = confirmDeal(game);
   next = startBidding(next);
@@ -57,27 +57,27 @@ test("aufgehende Ansagen werden abgewiesen", () => {
   assert.doesNotThrow(() => submitBids(game, [1, 1, 0]));
 });
 
-test("die Stiche muessen exakt der Kartenzahl entsprechen", () => {
+test("die Stiche müssen exakt der Kartenzahl entsprechen", () => {
   let game = submitBids(startBidding(confirmDeal(createGame(NAMES))), [1, 1, 0]);
   game = startTricks(game);
   assert.throws(() => submitTricks(game, [1, 1, 0]), /genau 1 Stiche/);
   assert.doesNotThrow(() => submitTricks(game, [0, 1, 0]));
 });
 
-test("Ansagen ausserhalb von 0 bis Kartenzahl werden abgewiesen", () => {
+test("Ansagen außerhalb von 0 bis Kartenzahl werden abgewiesen", () => {
   const game = startBidding(confirmDeal(createGame(NAMES)));
   assert.throws(() => submitBids(game, [2, 0, 0]));
   assert.throws(() => submitBids(game, [-1, 1, 1]));
 });
 
-test("nach der Wertung geht es in die naechste Runde mit einer Karte mehr", () => {
+test("nach der Wertung geht es in die nächste Runde mit einer Karte mehr", () => {
   const game = nextRound(playRound(createGame(NAMES), [1, 0, 1], [1, 0, 0]));
   assert.equal(game.round, 2);
   assert.equal(game.phase, PHASE.DEAL);
   assert.equal(cards(game), 2);
 });
 
-test("eine ungewertete Runde laesst sich nicht abschliessen", () => {
+test("eine ungewertete Runde lässt sich nicht abschließen", () => {
   assert.throws(() => nextRound(createGame(NAMES)), /noch nicht gewertet/);
 });
 
@@ -90,7 +90,7 @@ test("nach der letzten Runde ist die Partie vorbei", () => {
   assert.equal(game.phase, PHASE.DONE);
 });
 
-test("die letzte Wertung laesst sich zuruecknehmen, die Ansagen bleiben", () => {
+test("die letzte Wertung lässt sich zurücknehmen, die Ansagen bleiben", () => {
   const played = nextRound(playRound(createGame(NAMES), [1, 1, 0], [1, 0, 0]));
   const undone = undoLastScoredRound(played);
 
@@ -101,11 +101,11 @@ test("die letzte Wertung laesst sich zuruecknehmen, die Ansagen bleiben", () => 
   assert.deepEqual(totals(undone), [0, 0, 0]);
 });
 
-test("ohne gewertete Runde gibt es nichts zurueckzunehmen", () => {
+test("ohne gewertete Runde gibt es nichts zurückzunehmen", () => {
   assert.equal(undoLastScoredRound(createGame(NAMES)), null);
 });
 
-test("kaputte oder fremde Spielstaende werden verworfen", () => {
+test("kaputte oder fremde Spielstände werden verworfen", () => {
   assert.equal(restoreGame(null), null);
   assert.equal(restoreGame({ version: 99 }), null);
   assert.equal(restoreGame({ ...createGame(NAMES), round: 21 }), null);

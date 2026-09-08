@@ -1,5 +1,5 @@
-/* Duenner Wrapper um localStorage. Der Speicher kann fehlen (privater Modus,
-   blockierte Cookies) - dann laeuft die App eben ohne Wiederaufnahme weiter,
+/* Dünner Wrapper um localStorage. Der Speicher kann fehlen (privater Modus,
+   blockierte Cookies) - dann läuft die App eben ohne Wiederaufnahme weiter,
    statt beim Start zu sterben. */
 
 const PREFIX = "wizard-scorer";

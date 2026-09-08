@@ -46,7 +46,7 @@ test("die Summe der Ansagen darf nicht aufgehen", () => {
 });
 
 test("der letzte Ansagende hat genau eine gesperrte Zahl", () => {
-  // 3 Karten, bisher 1 + 1 angesagt -> 1 waere die Zahl, die aufgeht.
+  // 3 Karten, bisher 1 + 1 angesagt -> 1 wäre die Zahl, die aufgeht.
   assert.equal(forbiddenBid(3, [1, 1]), 1);
   // Niemand hat etwas angesagt -> die volle Stichzahl ist gesperrt.
   assert.equal(forbiddenBid(3, [0, 0]), 3);
@@ -73,7 +73,7 @@ test("scoreRound wertet die ganze Runde auf einmal", () => {
   assert.deepEqual(scoreRound([1, 0, 2], [1, 1, 1]), [30, -10, -10]);
 });
 
-test("die Stiche einer Runde muessen exakt aufgehen", () => {
+test("die Stiche einer Runde müssen exakt aufgehen", () => {
   assert.equal(trickSumIsValid([1, 1, 1], 3), true);
   assert.equal(trickSumIsValid([2, 1, 1], 3), false);
   assert.equal(trickSumIsValid([0, 0, 0], 3), false);
@@ -84,7 +84,7 @@ test("Gesamtpunkte summieren alle gewerteten Runden", () => {
   assert.deepEqual(totalScores(3, played), [0, 20, 50]);
 });
 
-test("Platzierung sortiert absteigend und teilt Gleichstaende", () => {
+test("Platzierung sortiert absteigend und teilt Gleichstände", () => {
   const result = standings([40, 90, 40, 10]);
   assert.deepEqual(
     result.map((row) => [row.index, row.rank]),

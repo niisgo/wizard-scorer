@@ -1,5 +1,5 @@
 /* Der laufende Zustand der App: genau eine Partie, automatisch gesichert.
-   Die Screens lesen ueber getGame() und melden sich per subscribe() an. */
+   Die Screens lesen über getGame() und melden sich per subscribe() an. */
 
 import { restoreGame } from "./game.js";
 import { KEYS, read, remove, write } from "./storage.js";
@@ -31,7 +31,7 @@ export function setGame(next) {
 }
 
 /**
- * Einen Uebergang aus game.js anwenden: update(nextRound) statt
+ * Einen Übergang aus game.js anwenden: update(nextRound) statt
  * setGame(nextRound(getGame())).
  *
  * @param {(game: object) => object|null} transition
@@ -58,7 +58,7 @@ export function rememberNames(names) {
 
 /**
  * Die Namen der letzten Partie - vorbelegt bleibt die gleiche Runde damit
- * beim naechsten Mal getippt statt neu eingegeben.
+ * beim nächsten Mal getippt statt neu eingegeben.
  *
  * @param {number} count
  * @returns {string[]}

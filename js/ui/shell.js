@@ -1,4 +1,4 @@
-/* Zeichnet das Grundgeruest: Topbar, Inhalt, Actionbar.
+/* Zeichnet das Grundgerüst: Topbar, Inhalt, Actionbar.
    Jeder Screen liefert nur noch sein Beschreibungsobjekt. */
 
 import { append, clear, el } from "../dom.js";
@@ -11,9 +11,9 @@ const refs = {
 
 /**
  * @typedef {object} ScreenView
- * @property {string} [title] Ueberschrift in der Topbar
+ * @property {string} [title] Überschrift in der Topbar
  * @property {string} [subtitle] kleine Zeile darunter
- * @property {{label: string, onClick: () => void}} [back] Zurueck-Knopf links
+ * @property {{label: string, onClick: () => void}} [back] Zurück-Knopf links
  * @property {Node} [aside] freies Element rechts in der Topbar
  * @property {Array<Node|string|null|false>} [content] Inhalt
  * @property {Array<Node|string|null|false>} [actions] Buttons am unteren Rand

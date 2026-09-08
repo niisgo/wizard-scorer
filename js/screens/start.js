@@ -1,4 +1,4 @@
-/* Startbildschirm: Spielerzahl waehlen - oder die letzte Partie fortsetzen. */
+/* Startbildschirm: Spielerzahl wählen - oder die letzte Partie fortsetzen. */
 
 import { el } from "../dom.js";
 import { MAX_PLAYERS, MIN_PLAYERS, totalRounds } from "../rules.js";

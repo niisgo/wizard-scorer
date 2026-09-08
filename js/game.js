@@ -1,5 +1,5 @@
-/* Das Spielmodell: ein Partie-Objekt und die erlaubten Zustandsuebergaenge.
-   Alle Funktionen sind seiteneffektfrei und geben eine neue Partie zurueck. */
+/* Das Spielmodell: ein Partie-Objekt und die erlaubten Zustandsübergänge.
+   Alle Funktionen sind seiteneffektfrei und geben eine neue Partie zurück. */
 
 import {
   MAX_PLAYERS,
@@ -18,13 +18,13 @@ export const GAME_VERSION = 1;
 
 /** Die Stationen einer Runde. */
 export const PHASE = {
-  /** "Es werden 3 Karten ausgeteilt" - warten auf Bestaetigung. */
+  /** "Es werden 3 Karten ausgeteilt" - warten auf Bestätigung. */
   DEAL: "deal",
-  /** Punkteuebersicht mit dem jeweils passenden Hauptbutton. */
+  /** Punkteübersicht mit dem jeweils passenden Hauptbutton. */
   BOARD: "board",
   /** Ansagen werden reihum eingetragen. */
   BIDS: "bids",
-  /** Tatsaechlich geholte Stiche werden eingetragen. */
+  /** Tatsächlich geholte Stiche werden eingetragen. */
   TRICKS: "tricks",
   /** Partie vorbei. */
   DONE: "done",
@@ -72,14 +72,14 @@ export const currentBids = (game) => roundEntry(game)?.bids ?? null;
 export const currentTricks = (game) => roundEntry(game)?.tricks ?? null;
 export const isRoundScored = (game) => Boolean(roundEntry(game)?.scores);
 
-/* --- Uebergaenge --------------------------------------------------------- */
+/* --- Übergänge --------------------------------------------------------- */
 
-/** Austeil-Ansage bestaetigt -> zur Punkteuebersicht. */
+/** Austeil-Ansage bestätigt -> zur Punkteübersicht. */
 export function confirmDeal(game) {
   return { ...game, phase: PHASE.BOARD };
 }
 
-/** "Schaetzen" gedrueckt (oder Ansagen korrigieren). */
+/** "Schätzen" gedrückt (oder Ansagen korrigieren). */
 export function startBidding(game) {
   return { ...game, phase: PHASE.BIDS };
 }
@@ -93,13 +93,13 @@ export function startBidding(game) {
 export function submitBids(game, bids) {
   assertLength(game, bids, "Ansagen");
   if (!bidSumIsAllowed(bids, cards(game))) {
-    throw new Error("Die Ansagen duerfen nicht aufgehen.");
+    throw new Error("Die Ansagen dürfen nicht aufgehen.");
   }
 
   return writeRound({ ...game, phase: PHASE.BOARD }, { bids: [...bids] });
 }
 
-/** "Runde beenden" gedrueckt -> Stiche eintragen. */
+/** "Runde beenden" gedrückt -> Stiche eintragen. */
 export function startTricks(game) {
   return { ...game, phase: PHASE.TRICKS };
 }
@@ -113,11 +113,11 @@ export function startTricks(game) {
 export function submitTricks(game, tricks) {
   assertLength(game, tricks, "Stiche");
   if (!trickSumIsValid(tricks, cards(game))) {
-    throw new Error(`Es muessen genau ${cards(game)} Stiche verteilt werden.`);
+    throw new Error(`Es müssen genau ${cards(game)} Stiche verteilt werden.`);
   }
 
   const bids = currentBids(game);
-  if (!bids) throw new Error("Ohne Ansagen laesst sich die Runde nicht werten.");
+  if (!bids) throw new Error("Ohne Ansagen lässt sich die Runde nicht werten.");
 
   return writeRound({ ...game, phase: PHASE.BOARD }, {
     tricks: [...tricks],
@@ -125,7 +125,7 @@ export function submitTricks(game, tricks) {
   });
 }
 
-/** Naechste Runde - oder Schlusstabelle, wenn das Blatt aufgebraucht ist. */
+/** Nächste Runde - oder Schlusstabelle, wenn das Blatt aufgebraucht ist. */
 export function nextRound(game) {
   if (!isRoundScored(game)) {
     throw new Error("Die laufende Runde ist noch nicht gewertet.");
@@ -137,10 +137,10 @@ export function nextRound(game) {
 }
 
 /**
- * Letzte gewertete Runde zuruecknehmen: Stiche und Punkte fallen weg, die
- * Ansagen bleiben stehen. Praktisch, wenn sich jemand verzaehlt hat.
+ * Letzte gewertete Runde zurücknehmen: Stiche und Punkte fallen weg, die
+ * Ansagen bleiben stehen. Praktisch, wenn sich jemand verzählt hat.
  *
- * @returns {object|null} neue Partie, oder null wenn es nichts zurueckzunehmen gibt
+ * @returns {object|null} neue Partie, oder null wenn es nichts zurückzunehmen gibt
  */
 export function undoLastScoredRound(game) {
   const lastScored = game.rounds.reduce(
@@ -156,10 +156,10 @@ export function undoLastScoredRound(game) {
   return { ...game, round: lastScored, phase: PHASE.BOARD, rounds };
 }
 
-/* --- Laden / Pruefen ----------------------------------------------------- */
+/* --- Laden / Prüfen ----------------------------------------------------- */
 
 /**
- * Eine gespeicherte Partie auf Plausibilitaet pruefen. Lieber eine Partie
+ * Eine gespeicherte Partie auf Plausibilität prüfen. Lieber eine Partie
  * verwerfen als mit kaputten Daten weiterrechnen.
  *
  * @param {unknown} raw
@@ -197,6 +197,6 @@ function assertLength(game, values, label) {
     throw new Error(`Es werden ${playerCount(game)} ${label} erwartet.`);
   }
   if (values.some((value) => !Number.isInteger(value) || value < 0 || value > cards(game))) {
-    throw new Error(`${label} muessen zwischen 0 und ${cards(game)} liegen.`);
+    throw new Error(`${label} müssen zwischen 0 und ${cards(game)} liegen.`);
   }
 }

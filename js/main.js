@@ -11,7 +11,7 @@ register("names", namesScreen);
 // Platzhalter, bis der Runden-Screen steht.
 register("deal", () => ({
   title: "Runde 1",
-  content: [el("p", { text: "Der Runden-Ablauf kommt als naechstes." })],
+  content: [el("p", { text: "Der Runden-Ablauf kommt als nächstes." })],
 }));
 
 go("start");

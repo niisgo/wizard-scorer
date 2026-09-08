@@ -20,7 +20,7 @@ export function go(name, params = {}) {
   draw();
 }
 
-/** Aktuellen Screen neu zeichnen (z.B. nach einer Zustandsaenderung). */
+/** Aktuellen Screen neu zeichnen (z.B. nach einer Zustandsänderung). */
 export function refresh() {
   if (active.name) draw();
 }

@@ -24,7 +24,7 @@ export function el(tag, props = {}, children = []) {
   return node;
 }
 
-/** Kinder anhaengen; Strings werden zu Textknoten, null/false werden ignoriert. */
+/** Kinder anhängen; Strings werden zu Textknoten, null/false werden ignoriert. */
 export function append(parent, children) {
   const list = Array.isArray(children) ? children : [children];
   for (const child of list) {
@@ -48,7 +48,7 @@ export function signed(value) {
   return value > 0 ? `+${value}` : String(value);
 }
 
-/** Kurzes haptisches Feedback, wenn das Geraet es kann. */
+/** Kurzes haptisches Feedback, wenn das Gerät es kann. */
 export function buzz(pattern = 8) {
   try {
     navigator.vibrate?.(pattern);

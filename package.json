@@ -2,7 +2,7 @@
   "name": "wizard-scorer",
   "version": "1.0.0",
   "private": true,
-  "description": "Digitaler Punkteblock fuer das Kartenspiel Wizard - als installierbare PWA.",
+  "description": "Digitaler Punkteblock für das Kartenspiel Wizard - als installierbare PWA.",
   "type": "module",
   "scripts": {
     "dev": "node tools/serve.mjs",

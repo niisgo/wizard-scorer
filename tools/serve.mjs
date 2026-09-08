@@ -1,4 +1,4 @@
-/* Winziger statischer Dev-Server ohne Abhaengigkeiten.
+/* Winziger statischer Dev-Server ohne Abhängigkeiten.
    Start: npm run dev  ->  http://localhost:5173 */
 
 import { createServer } from "node:http";
@@ -55,10 +55,10 @@ createServer(async (req, res) => {
 
   res.writeHead(200, {
     "content-type": MIME[extname(file.path)] ?? "application/octet-stream",
-    // Waehrend der Entwicklung will niemand Caching-Raetsel loesen.
+    // Während der Entwicklung will niemand Caching-Rätsel lösen.
     "cache-control": "no-store",
   });
   res.end(file.body);
 }).listen(PORT, () => {
-  console.log(`Wizard Scorer laeuft auf http://localhost:${PORT}`);
+  console.log(`Wizard Scorer läuft auf http://localhost:${PORT}`);
 });

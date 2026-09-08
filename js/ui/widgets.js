@@ -19,7 +19,7 @@ export function button(label, { variant = "primary", onClick, disabled = false, 
   });
 }
 
-/** Karte mit optionaler Ueberschrift. */
+/** Karte mit optionaler Überschrift. */
 export function card(children, { title, class: extra = "" } = {}) {
   return el("section", { class: `card ${extra}`.trim() }, [
     title ? el("h2", { class: "card__title", text: title }) : null,
@@ -27,17 +27,17 @@ export function card(children, { title, class: extra = "" } = {}) {
   ]);
 }
 
-/** Hinweiszeile, z.B. fuer Regelverstoesse. */
+/** Hinweiszeile, z.B. für Regelverstöße. */
 export function note(text, tone = "info") {
   return el("p", { class: `note note--${tone}`, text, role: tone === "error" ? "alert" : null });
 }
 
 /**
- * Raster aus Zahl-Knoepfen von 0 bis max - die Haupteingabe der App.
- * Gross genug fuer den Daumen, ohne Tastatur.
+ * Raster aus Zahl-Knöpfen von 0 bis max - die Haupteingabe der App.
+ * Groß genug für den Daumen, ohne Tastatur.
  *
  * @param {object} options
- * @param {number} options.max groesste waehlbare Zahl
+ * @param {number} options.max größte wählbare Zahl
  * @param {number|null} options.value aktuelle Auswahl
  * @param {number|null} [options.blocked] gesperrte Zahl (Hook-Regel)
  * @param {(value: number) => void} options.onPick
@@ -71,7 +71,7 @@ export function numberGrid({ max, value, blocked = null, onPick, labelledBy }) {
   return grid;
 }
 
-/** Zeile "Spieler - Wert" fuer Uebersichten. */
+/** Zeile "Spieler - Wert" für Übersichten. */
 export function statRow(label, value, { tone = "" } = {}) {
   return el("div", { class: "statrow" }, [
     el("span", { class: "statrow__label", text: label }),
