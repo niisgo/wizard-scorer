@@ -71,6 +71,30 @@ export function numberGrid({ max, value, blocked = null, onPick, labelledBy }) {
   return grid;
 }
 
+/**
+ * Schmaler Fortschrittsbalken über die Partie.
+ *
+ * @param {number} round aktuelle Runde
+ * @param {number} total Runden insgesamt
+ */
+export function roundProgress(round, total) {
+  return el(
+    "div",
+    {
+      class: "progress",
+      role: "progressbar",
+      "aria-valuemin": "1",
+      "aria-valuemax": String(total),
+      "aria-valuenow": String(round),
+      "aria-label": `Runde ${round} von ${total}`,
+    },
+    el("span", {
+      class: "progress__bar",
+      style: `width: ${(round / total) * 100}%`,
+    }),
+  );
+}
+
 /** Zeile "Spieler - Wert" für Übersichten. */
 export function statRow(label, value, { tone = "" } = {}) {
   return el("div", { class: "statrow" }, [

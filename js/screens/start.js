@@ -1,19 +1,40 @@
 /* Startbildschirm: Spielerzahl wählen - oder die letzte Partie fortsetzen. */
 
 import { el } from "../dom.js";
+import { resume } from "../flow.js";
+import { roundsTotal } from "../game.js";
 import { MAX_PLAYERS, MIN_PLAYERS, totalRounds } from "../rules.js";
 import { go } from "../router.js";
+import { getGame } from "../store.js";
 import { button, card } from "../ui/widgets.js";
 
 let chosenCount = 4;
 
 export function startScreen() {
+  const running = getGame();
+
   return {
-    content: [hero(), playerPicker()],
+    content: [hero(), running && resumeCard(running), playerPicker()],
     actions: [
-      button("Weiter", { onClick: () => go("names", { count: chosenCount }) }),
+      button(running ? "Neues Spiel" : "Weiter", {
+        variant: running ? "ghost" : "primary",
+        onClick: () => go("names", { count: chosenCount }),
+      }),
     ],
   };
+}
+
+function resumeCard(game) {
+  return card(
+    [
+      el("p", {
+        class: "resume__meta",
+        text: `${game.players.join(", ")} · Runde ${game.round} von ${roundsTotal(game)}`,
+      }),
+      button("Weiterspielen", { onClick: resume }),
+    ],
+    { title: "Angefangene Partie", class: "resume" },
+  );
 }
 
 function hero() {

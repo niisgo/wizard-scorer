@@ -73,6 +73,67 @@
   color: var(--text-muted);
 }
 
+.resume__meta {
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+}
+
+/* --- Austeil-Ansage ------------------------------------------------------ */
+
+.deal {
+  position: relative;
+  display: grid;
+  place-items: center;
+  gap: var(--space-1);
+  padding-block: var(--space-6) var(--space-5);
+  text-align: center;
+}
+
+.deal::before {
+  content: "";
+  position: absolute;
+  inset: -10% 10% 10%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--primary) 30%, transparent) 0%,
+    transparent 70%
+  );
+  filter: blur(24px);
+  pointer-events: none;
+}
+
+.deal > * {
+  position: relative;
+}
+
+.deal__label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.deal__count {
+  font-family: var(--font-numeric);
+  font-size: clamp(5.5rem, 34vw, 8.5rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  font-variant-numeric: tabular-nums;
+  background: linear-gradient(160deg, var(--text) 0%, var(--primary) 70%, var(--accent) 110%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.deal__unit {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
 /* --- Namen --------------------------------------------------------------- */
 
 .namerow {
