@@ -74,10 +74,13 @@ export const isRoundScored = (game) => Boolean(roundEntry(game)?.scores);
 
 /* --- Übergänge --------------------------------------------------------- */
 
-/** Austeil-Ansage bestätigt -> zur Punkteübersicht. */
-export function confirmDeal(game) {
+/** Zurück zur Punkteübersicht - etwa wenn eine Eingabe abgebrochen wird. */
+export function toBoard(game) {
   return { ...game, phase: PHASE.BOARD };
 }
+
+/** Austeil-Ansage bestätigt -> zur Punkteübersicht. */
+export const confirmDeal = toBoard;
 
 /** "Schätzen" gedrückt (oder Ansagen korrigieren). */
 export function startBidding(game) {

@@ -134,6 +134,87 @@
   color: var(--text-muted);
 }
 
+/* --- Ansagen ------------------------------------------------------------- */
+
+.bidstrip {
+  display: flex;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0 0 var(--space-1);
+  list-style: none;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.bidstrip::-webkit-scrollbar {
+  display: none;
+}
+
+.bidstrip__item {
+  position: relative;
+  flex: none;
+  display: grid;
+  gap: 2px;
+  min-width: 76px;
+  max-width: 108px;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  text-align: center;
+  background: var(--surface);
+  box-shadow: inset 0 0 0 1px var(--border-soft);
+}
+
+.bidstrip__item.is-current {
+  background: var(--primary-soft);
+  box-shadow: inset 0 0 0 2px var(--primary);
+}
+
+.bidstrip__name {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bidstrip__value {
+  font-family: var(--font-numeric);
+  font-size: 1.125rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-faint);
+}
+
+.bidstrip__item.is-done .bidstrip__value,
+.bidstrip__item.is-current .bidstrip__value {
+  color: var(--text);
+}
+
+/* Liegt über der ganzen Kachel: antippen korrigiert die Ansage. */
+.bidstrip__edit {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.turn {
+  padding-block: var(--space-5) var(--space-3);
+  text-align: center;
+}
+
+.turn__label {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.turn__name {
+  font-size: clamp(1.75rem, 9vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+}
+
 /* --- Namen --------------------------------------------------------------- */
 
 .namerow {
