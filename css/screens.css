@@ -306,6 +306,47 @@
   background: var(--bad-soft);
 }
 
+.rankrow.is-lead {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent) 12%, var(--surface)) 0%,
+    var(--surface) 60%
+  );
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+/* --- Endstand ------------------------------------------------------------ */
+
+.trophy {
+  display: grid;
+  place-items: center;
+  gap: var(--space-1);
+  padding-block: var(--space-5) var(--space-4);
+  text-align: center;
+}
+
+.trophy__crown {
+  font-size: 2.5rem;
+  line-height: 1;
+  color: var(--accent);
+  filter: drop-shadow(0 6px 16px color-mix(in srgb, var(--accent) 45%, transparent));
+}
+
+.trophy__name {
+  font-size: clamp(1.75rem, 8vw, 2.25rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--text) 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.trophy__line {
+  color: var(--text-muted);
+}
+
 /* --- Rundenverlauf ------------------------------------------------------- */
 
 .card--flush {
