@@ -8,6 +8,7 @@ export const KEYS = {
   game: `${PREFIX}:game:v1`,
   names: `${PREFIX}:names:v1`,
   theme: `${PREFIX}:theme:v1`,
+  awake: `${PREFIX}:awake:v1`,
 };
 
 function backend() {

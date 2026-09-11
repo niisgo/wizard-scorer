@@ -14,6 +14,7 @@ import {
   startTricks,
 } from "../game.js";
 import { getGame, update } from "../store.js";
+import { menuButton } from "../ui/menu.js";
 import { historyCard, rankList } from "../ui/results.js";
 import { button, roundProgress } from "../ui/widgets.js";
 
@@ -27,6 +28,7 @@ export function boardScreen() {
   return {
     title: `Runde ${game.round} von ${rounds}`,
     subtitle: `${count} ${count === 1 ? "Karte" : "Karten"} · ${status(bids, scored)}`,
+    aside: menuButton(),
     content: [
       roundProgress(game.round, rounds),
       rankList(game, { showRound: true, showDelta: scored }),

@@ -55,6 +55,45 @@
   --tap: 48px;
 }
 
+/* Die helle Palette gilt in zwei Fällen: das System steht auf hell und es
+   wurde nichts anderes gewählt, oder sie ist im Menü fest eingestellt.
+   Ohne Präprozessor bleibt nur, den Block zweimal zu schreiben. */
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    color-scheme: light;
+
+    --bg: #f6f4fb;
+    --bg-glow: #e9e2ff;
+    --surface: #ffffff;
+    --surface-2: #f2eefc;
+    --surface-3: #e7e0f8;
+    --border: #ddd5f0;
+    --border-soft: #e8e2f6;
+
+    --text: #1c1533;
+    --text-muted: #5f5686;
+    --text-faint: #8d85ad;
+
+    --primary: #7c3aed;
+    --primary-strong: #6d28d9;
+    --primary-soft: #ece3ff;
+    --on-primary: #ffffff;
+
+    --accent: #b45309;
+    --accent-soft: #fdf0d5;
+
+    --good: #047857;
+    --good-soft: #d9f5ea;
+    --bad: #be123c;
+    --bad-soft: #fde2e7;
+
+    --shadow-sm: 0 1px 2px rgb(28 21 51 / 0.08);
+    --shadow-md: 0 8px 24px -10px rgb(28 21 51 / 0.22);
+    --shadow-lg: 0 20px 48px -20px rgb(28 21 51 / 0.28);
+  }
+}
+
 :root[data-theme="light"] {
   color-scheme: light;
 

@@ -5,6 +5,7 @@ import { el } from "../dom.js";
 import { resume } from "../flow.js";
 import { bidOrder, cards, confirmDeal, dealer, roundsTotal } from "../game.js";
 import { getGame, update } from "../store.js";
+import { menuButton } from "../ui/menu.js";
 import { button, card, note, roundProgress, statRow } from "../ui/widgets.js";
 
 export function dealScreen() {
@@ -16,6 +17,7 @@ export function dealScreen() {
   return {
     title: `Runde ${game.round}`,
     subtitle: `von ${roundsTotal(game)} · ${game.players.length} Spieler`,
+    aside: menuButton(),
     content: [
       roundProgress(game.round, roundsTotal(game)),
       announcement(count),

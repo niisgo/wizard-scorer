@@ -11,6 +11,8 @@ import { finalScreen } from "./screens/final.js";
 import { namesScreen } from "./screens/names.js";
 import { startScreen } from "./screens/start.js";
 import { tricksScreen } from "./screens/tricks.js";
+import { applyTheme } from "./theme.js";
+import { initWakeLock } from "./wakelock.js";
 
 register("start", startScreen);
 register("names", namesScreen);
@@ -20,6 +22,8 @@ register("bids", bidsScreen);
 register("tricks", tricksScreen);
 register("final", finalScreen);
 
+applyTheme();
+initWakeLock();
 registerServiceWorker();
 
 // Der Browser meldet erst nach ein paar Sekunden, ob installiert werden kann.
