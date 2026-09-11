@@ -3,6 +3,7 @@
 import { el } from "../dom.js";
 import { resume } from "../flow.js";
 import { roundsTotal } from "../game.js";
+import { canInstall, promptInstall } from "../pwa.js";
 import { MAX_PLAYERS, MIN_PLAYERS, totalRounds } from "../rules.js";
 import { go } from "../router.js";
 import { getGame } from "../store.js";
@@ -20,6 +21,11 @@ export function startScreen() {
         variant: running ? "ghost" : "primary",
         onClick: () => go("names", { count: chosenCount }),
       }),
+      canInstall() &&
+        button("Auf dem Homescreen ablegen", {
+          variant: "quiet",
+          onClick: promptInstall,
+        }),
     ],
   };
 }

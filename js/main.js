@@ -2,7 +2,8 @@
    Partie stehen geblieben ist. */
 
 import { resume } from "./flow.js";
-import { register } from "./router.js";
+import { onInstallChange, registerServiceWorker } from "./pwa.js";
+import { currentScreen, refresh, register } from "./router.js";
 import { bidsScreen } from "./screens/bids.js";
 import { boardScreen } from "./screens/board.js";
 import { dealScreen } from "./screens/deal.js";
@@ -18,5 +19,12 @@ register("board", boardScreen);
 register("bids", bidsScreen);
 register("tricks", tricksScreen);
 register("final", finalScreen);
+
+registerServiceWorker();
+
+// Der Browser meldet erst nach ein paar Sekunden, ob installiert werden kann.
+onInstallChange(() => {
+  if (currentScreen() === "start") refresh();
+});
 
 resume();
