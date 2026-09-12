@@ -1,12 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Wizard Scorer">
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#9b6cff" />
-      <stop offset="1" stop-color="#4c1d95" />
-    </linearGradient>
-  </defs>
-  <rect width="64" height="64" rx="14" fill="url(#bg)" />
-  <path d="M32 10 L44 44 L20 44 Z" fill="#faf7ff" />
-  <ellipse cx="32" cy="45" rx="21" ry="5.6" fill="#faf7ff" />
-  <path d="M32 25.7 L33.29 29.42 L37.23 29.5 L34.09 31.88 L35.23 35.65 L32 33.4 L28.77 35.65 L29.91 31.88 L26.77 29.5 L30.71 29.42 Z" fill="#fbbf24" />
+  <rect width="64" height="64" rx="9" fill="#0f1a14" />
+  <rect x="2.5" y="2.5" width="59" height="59" rx="7" fill="none" stroke="#7e6930" stroke-width="1.4" />
+  <rect x="6" y="6" width="52" height="52" rx="5" fill="none" stroke="#4a4326" stroke-width="0.8" />
+  <g fill="#c2a059">
+    <path d="M8.54 18 L16.82 18 L24.25 38.55 L30.39 23.6 L36.14 23.6 L42.28 38.55 L49.71 18 L52.93 18 L42.81 46 L37.06 46 L30.74 30.6 L24.41 46 L18.66 46 Z" />
+    <rect x="5.8" y="17.9" width="13.8" height="1.5" />
+    <rect x="44.4" y="17.9" width="13.8" height="1.5" />
+    <rect x="28.4" y="23.5" width="9.7" height="1.4" />
+  </g>
 </svg>

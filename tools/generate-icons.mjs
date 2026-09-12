@@ -1,9 +1,12 @@
 /* Erzeugt die App-Icons als PNG - ohne Abhängigkeiten, direkt aus Node.
    Start: npm run icons
 
-   Gezeichnet wird ein Zaubererhut auf violettem Verlauf: eine Form, die auch
-   bei 48 Pixeln auf dem Homescreen noch erkennbar ist. Gerendert wird mit
-   dreifachem Supersampling, damit die Kanten weich werden. */
+   Motiv ist kein Bildchen, sondern ein Monogramm: ein W mit römischem
+   Strichkontrast in Messing, eingefasst von einer doppelten Haarlinie -
+   wie die Prägung auf einem Buchdeckel. Das bleibt auch bei 48 Pixeln
+   lesbar und sieht nicht aus wie ein Aufkleber.
+
+   Gerendert wird mit vierfachem Supersampling gegen harte Kanten. */
 
 import { deflateSync } from "node:zlib";
 import { mkdirSync, writeFileSync } from "node:fs";
@@ -11,110 +14,75 @@ import { fileURLToPath } from "node:url";
 import { join } from "node:path";
 
 const OUT = fileURLToPath(new URL("../icons/", import.meta.url));
-const SAMPLES = 3;
+const SAMPLES = 4;
 
-/* --- Farben -------------------------------------------------------------- */
+/* --- Farben (identisch mit den Design-Tokens) ---------------------------- */
 
-const BG_TOP = [155, 108, 255];
-const BG_BOTTOM = [76, 29, 149];
-const HAT = [250, 247, 255];
-const HAT_SHADE = [214, 203, 240];
-const STAR = [251, 191, 36];
+const FELT = [15, 26, 20];
+const BRASS = [194, 160, 89];
+const FRAME = mix(FELT, BRASS, 0.55);
+const FRAME_INNER = mix(FELT, BRASS, 0.3);
 
-/* --- Geometrie (normalisiert auf die Inhaltsfläche) ---------------------- */
+/* --- Das W --------------------------------------------------------------- */
 
-const CONE = [
-  [0.5, 0.135],
-  [0.688, 0.688],
-  [0.312, 0.688],
+/* Die vier Stämme des W als Mittellinien im Einheitsquadrat des
+   Schriftfelds. Abwärtsstriche sind fett, Aufwärtsstriche dünn - so bauen
+   römische Kapitalis-Schriften ihren Kontrast auf. `h` ist die halbe
+   waagerecht gemessene Strichstärke. */
+const APEX_Y = 0.2;
+const STEMS = [
+  { a: [0.08, 0], b: [0.3, 1], h: 0.09 },
+  { a: [0.3, 1], b: [0.5, APEX_Y], h: 0.035 },
+  { a: [0.5, APEX_Y], b: [0.7, 1], h: 0.09 },
+  { a: [0.7, 1], b: [0.92, 0], h: 0.035 },
 ];
-const BRIM = { cx: 0.5, cy: 0.702, rx: 0.325, ry: 0.088 };
-const BADGE = { cx: 0.5, cy: 0.487, outer: 0.079, inner: 0.032 };
 
-const starPoints = starPolygon(BADGE.cx, BADGE.cy, BADGE.outer, BADGE.inner, 5);
+const [S1, S2, S3, S4] = STEMS;
 
-/* --- Zeichnen ------------------------------------------------------------ */
+/* Der Umriss, im Uhrzeigersinn oben links beginnend. Die Spitzen entstehen
+   dort, wo sich zwei Stammkanten schneiden - deshalb wird gerechnet statt
+   Striche mit runden Enden übereinanderzulegen. */
+const OUTLINE = [
+  [edgeX(S1, -1, 0), 0],
+  [edgeX(S1, 1, 0), 0],
+  meet(S1, 1, S2, -1), // Kerbe im linken V
+  [edgeX(S2, -1, APEX_Y), APEX_Y],
+  [edgeX(S3, 1, APEX_Y), APEX_Y], // geschnittene Spitze in der Mitte
+  meet(S3, 1, S4, -1), // Kerbe im rechten V
+  [edgeX(S4, -1, 0), 0],
+  [edgeX(S4, 1, 0), 0],
+  [edgeX(S4, 1, 1), 1],
+  [edgeX(S3, -1, 1), 1],
+  meet(S3, -1, S2, 1), // Tal zwischen den beiden V
+  [edgeX(S2, 1, 1), 1],
+  [edgeX(S1, -1, 1), 1],
+];
 
-/**
- * Farbe eines Punktes in normalisierten Koordinaten (0..1 über die
- * Inhaltsfläche). Gibt null zurück, wenn dort nur der Hintergrund liegt.
- */
-function hatColorAt(x, y) {
-  if (pointInPolygon(x, y, starPoints)) return STAR;
-  if (inEllipse(x, y, BRIM)) {
-    // Untere Hälfte der Krempe etwas dunkler - das gibt der Form Tiefe.
-    return y > BRIM.cy ? HAT_SHADE : HAT;
-  }
-  if (pointInPolygon(x, y, CONE)) return HAT;
-  return null;
+/* Waagerechte Serifen an den oberen Enden und auf der Mittelspitze. */
+const SERIFS = [
+  { cx: 0.08, cy: 0.024, w: 0.3, h: 0.048 },
+  { cx: 0.92, cy: 0.024, w: 0.3, h: 0.048 },
+  { cx: 0.5275, cy: 0.222, w: 0.21, h: 0.044 },
+];
+
+/** x-Wert einer Stammkante (-1 links, +1 rechts) auf Höhe y. */
+function edgeX(stem, side, y) {
+  const t = (y - stem.a[1]) / (stem.b[1] - stem.a[1]);
+  return stem.a[0] + t * (stem.b[0] - stem.a[0]) + side * stem.h;
 }
 
-/**
- * @param {number} size Kantenlänge in Pixeln
- * @param {object} options
- * @param {number} options.padding Rand um die Zeichnung (Anteil der Kante)
- * @param {boolean} options.rounded abgerundete Ecken statt randlos
- */
-function render(size, { padding, rounded }) {
-  const pixels = Buffer.alloc(size * size * 4);
-  const radius = size * 0.22;
-  const step = 1 / SAMPLES;
-
-  for (let py = 0; py < size; py += 1) {
-    for (let px = 0; px < size; px += 1) {
-      let r = 0;
-      let g = 0;
-      let b = 0;
-      let a = 0;
-
-      for (let sy = 0; sy < SAMPLES; sy += 1) {
-        for (let sx = 0; sx < SAMPLES; sx += 1) {
-          const x = (px + (sx + 0.5) * step) / size;
-          const y = (py + (sy + 0.5) * step) / size;
-
-          if (rounded && !inRoundedSquare(x * size, y * size, size, radius)) continue;
-
-          const background = mix(BG_TOP, BG_BOTTOM, (x * 0.35 + y * 0.65));
-          const nx = (x - padding) / (1 - 2 * padding);
-          const ny = (y - padding) / (1 - 2 * padding);
-          const shape =
-            nx >= 0 && nx <= 1 && ny >= 0 && ny <= 1 ? hatColorAt(nx, ny) : null;
-          const color = shape ?? background;
-
-          r += color[0];
-          g += color[1];
-          b += color[2];
-          a += 255;
-        }
-      }
-
-      const total = SAMPLES * SAMPLES;
-      const offset = (py * size + px) * 4;
-      // Deckkraft aus der Abdeckung, Farbe aus dem Mittel der Treffer.
-      const covered = a / 255;
-      pixels[offset] = covered ? Math.round(r / covered) : 0;
-      pixels[offset + 1] = covered ? Math.round(g / covered) : 0;
-      pixels[offset + 2] = covered ? Math.round(b / covered) : 0;
-      pixels[offset + 3] = Math.round(a / total);
-    }
-  }
-
-  return encodePng(size, size, pixels);
+/** Schnittpunkt zweier Stammkanten. */
+function meet(stemA, sideA, stemB, sideB) {
+  const slope = (stem) => (stem.b[0] - stem.a[0]) / (stem.b[1] - stem.a[1]);
+  const mA = slope(stemA);
+  const mB = slope(stemB);
+  const cA = stemA.a[0] - mA * stemA.a[1] + sideA * stemA.h;
+  const cB = stemB.a[0] - mB * stemB.a[1] + sideB * stemB.h;
+  const y = (cB - cA) / (mA - mB);
+  return [mA * y + cA, y];
 }
 
-/* --- Hilfsgeometrie ------------------------------------------------------ */
-
-function starPolygon(cx, cy, outer, inner, spikes) {
-  const points = [];
-  for (let i = 0; i < spikes * 2; i += 1) {
-    const angle = -Math.PI / 2 + (i * Math.PI) / spikes;
-    const radius = i % 2 === 0 ? outer : inner;
-    points.push([cx + Math.cos(angle) * radius, cy + Math.sin(angle) * radius]);
-  }
-  return points;
-}
-
-function pointInPolygon(x, y, points) {
+function inPolygon(x, y, points) {
   let inside = false;
   for (let i = 0, j = points.length - 1; i < points.length; j = i, i += 1) {
     const [xi, yi] = points[i];
@@ -126,10 +94,96 @@ function pointInPolygon(x, y, points) {
   return inside;
 }
 
-function inEllipse(x, y, { cx, cy, rx, ry }) {
-  const dx = (x - cx) / rx;
-  const dy = (y - cy) / ry;
-  return dx * dx + dy * dy <= 1;
+const LETTER = { x0: 0.19, x1: 0.81, y0: 0.31, y1: 0.71 };
+const FRAME_INSET = 0.0;
+const FRAME_STROKE = 0.018;
+const INNER_INSET = 0.052;
+const INNER_STROKE = 0.009;
+
+/**
+ * Farbe an einem Punkt der Inhaltsfläche (0..1), oder null für Hintergrund.
+ */
+function markAt(x, y) {
+  if (onFrame(x, y, FRAME_INSET, FRAME_STROKE)) return FRAME;
+  if (onFrame(x, y, INNER_INSET, INNER_STROKE)) return FRAME_INNER;
+
+  // In das Einheitsquadrat des Buchstabens umrechnen.
+  const lx = (x - LETTER.x0) / (LETTER.x1 - LETTER.x0);
+  const ly = (y - LETTER.y0) / (LETTER.y1 - LETTER.y0);
+  if (lx < -0.2 || lx > 1.2 || ly < -0.2 || ly > 1.2) return null;
+
+  for (const serif of SERIFS) {
+    if (
+      Math.abs(lx - serif.cx) <= serif.w / 2 &&
+      Math.abs(ly - serif.cy) <= serif.h / 2
+    ) {
+      return BRASS;
+    }
+  }
+
+  return inPolygon(lx, ly, OUTLINE) ? BRASS : null;
+}
+
+function onFrame(x, y, inset, stroke) {
+  const low = inset;
+  const high = 1 - inset;
+  if (x < low || x > high || y < low || y > high) return false;
+  const inner = stroke;
+  return (
+    x < low + inner || x > high - inner || y < low + inner || y > high - inner
+  );
+}
+
+
+/* --- Zeichnen ------------------------------------------------------------ */
+
+/**
+ * @param {number} size Kantenlänge in Pixeln
+ * @param {object} options
+ * @param {number} options.padding Rand um die Zeichnung (Anteil der Kante)
+ * @param {boolean} options.rounded abgerundete Ecken statt randlos
+ */
+function render(size, { padding, rounded }) {
+  const pixels = Buffer.alloc(size * size * 4);
+  const radius = size * 0.2;
+  const step = 1 / SAMPLES;
+  const total = SAMPLES * SAMPLES;
+
+  for (let py = 0; py < size; py += 1) {
+    for (let px = 0; px < size; px += 1) {
+      let r = 0;
+      let g = 0;
+      let b = 0;
+      let hits = 0;
+
+      for (let sy = 0; sy < SAMPLES; sy += 1) {
+        for (let sx = 0; sx < SAMPLES; sx += 1) {
+          const x = (px + (sx + 0.5) * step) / size;
+          const y = (py + (sy + 0.5) * step) / size;
+
+          if (rounded && !inRoundedSquare(x * size, y * size, size, radius)) continue;
+
+          const nx = (x - padding) / (1 - 2 * padding);
+          const ny = (y - padding) / (1 - 2 * padding);
+          const inside = nx >= 0 && nx <= 1 && ny >= 0 && ny <= 1;
+          const color = (inside ? markAt(nx, ny) : null) ?? FELT;
+
+          r += color[0];
+          g += color[1];
+          b += color[2];
+          hits += 1;
+        }
+      }
+
+      const offset = (py * size + px) * 4;
+      pixels[offset] = hits ? Math.round(r / hits) : 0;
+      pixels[offset + 1] = hits ? Math.round(g / hits) : 0;
+      pixels[offset + 2] = hits ? Math.round(b / hits) : 0;
+      pixels[offset + 3] = Math.round((hits / total) * 255);
+    }
+  }
+
+  return encodePng(size, size, pixels);
 }
 
 function inRoundedSquare(x, y, size, radius) {
@@ -140,8 +194,7 @@ function inRoundedSquare(x, y, size, radius) {
   return dx * dx + dy * dy <= radius * radius;
 }
 
-function mix(from, to, t) {
-  const amount = Math.min(Math.max(t, 0), 1);
+function mix(from, to, amount) {
   return [
     from[0] + (to[0] - from[0]) * amount,
     from[1] + (to[1] - from[1]) * amount,
@@ -205,12 +258,12 @@ function encodePng(width, height, rgba) {
 /* --- Ausgabe ------------------------------------------------------------- */
 
 const targets = [
-  { file: "icon-192.png", size: 192, padding: 0.07, rounded: true },
-  { file: "icon-512.png", size: 512, padding: 0.07, rounded: true },
+  { file: "icon-192.png", size: 192, padding: 0.05, rounded: true },
+  { file: "icon-512.png", size: 512, padding: 0.05, rounded: true },
   // Maskierbare Icons werden von Android beschnitten - Inhalt weit nach innen.
-  { file: "icon-maskable-512.png", size: 512, padding: 0.2, rounded: false },
+  { file: "icon-maskable-512.png", size: 512, padding: 0.19, rounded: false },
   // iOS rundet das Touch-Icon selbst ab, deshalb randlos.
-  { file: "apple-touch-icon.png", size: 180, padding: 0.1, rounded: false },
+  { file: "apple-touch-icon.png", size: 180, padding: 0.08, rounded: false },
 ];
 
 mkdirSync(OUT, { recursive: true });
