@@ -7,6 +7,7 @@ const refs = {
   topbar: document.getElementById("topbar"),
   screen: document.getElementById("screen"),
   actionbar: document.getElementById("actionbar"),
+  announce: document.getElementById("announce"),
 };
 
 /**
@@ -29,8 +30,22 @@ export function paint(view) {
   clear(refs.actionbar);
   append(refs.actionbar, view.actions ?? []);
 
-  refs.screen.scrollTo?.({ top: 0 });
   window.scrollTo({ top: 0 });
+  playEnterAnimation();
+  announce(view);
+}
+
+function playEnterAnimation() {
+  refs.screen.classList.remove("screen--enter");
+  // Reflow erzwingen, sonst startet dieselbe Animation nicht neu.
+  void refs.screen.offsetWidth;
+  refs.screen.classList.add("screen--enter");
+}
+
+/** Titel und Unterzeile in die Live-Region, damit der Wechsel angesagt wird. */
+function announce({ title, subtitle }) {
+  if (!refs.announce) return;
+  refs.announce.textContent = [title, subtitle].filter(Boolean).join(", ");
 }
 
 function paintTopbar({ title, subtitle, back, aside }) {

@@ -43,6 +43,10 @@ button {
   cursor: pointer;
   border: none;
   background: none;
+  /* Kein 300ms-Verzug und kein Doppeltipp-Zoom auf Touchgeräten. */
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 h1,
@@ -68,6 +72,17 @@ h3 {
   min-height: 100svh;
   max-width: var(--app-max);
   margin-inline: auto;
+  /* Im Querformat schneidet die Notch sonst in den Inhalt. */
+  padding-inline: max(env(safe-area-inset-left), 0px) max(env(safe-area-inset-right), 0px);
+}
+
+/* Auf grossen Displays liest sich die Spalte besser mit Kante. */
+@media (min-width: 700px) {
+  .app {
+    box-shadow:
+      inset 1px 0 0 var(--border-soft),
+      inset -1px 0 0 var(--border-soft);
+  }
 }
 
 .topbar {
@@ -91,6 +106,18 @@ h3 {
   flex-direction: column;
   gap: var(--space-4);
 }
+
+.screen--enter {
+  animation: screen-in 0.22s ease-out;
+}
+
+@keyframes screen-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
 
 .actionbar {
   position: sticky;

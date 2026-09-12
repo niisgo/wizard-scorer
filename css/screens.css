@@ -534,3 +534,44 @@
   background: var(--surface-2);
   box-shadow: inset 0 0 0 1px var(--border);
 }
+
+/* --- Handy im Querformat ------------------------------------------------- */
+
+/* Steht bewusst am Ende: die Regeln müssen die Grundgrössen oben überschreiben. */
+@media (orientation: landscape) and (max-height: 560px) {
+  .hero {
+    padding-block: var(--space-3) 0;
+  }
+
+  .hero__lead {
+    display: none;
+  }
+
+  .deal {
+    padding-block: var(--space-2);
+  }
+
+  .deal__count {
+    font-size: clamp(3rem, 22vh, 4.5rem);
+  }
+
+  .deal::before {
+    display: none;
+  }
+
+  .turn {
+    padding-block: var(--space-2) var(--space-1);
+  }
+
+  .turn__name {
+    font-size: clamp(1.5rem, 7vh, 2rem);
+  }
+
+  .trophy {
+    padding-block: var(--space-3) var(--space-2);
+  }
+
+  .trophy__crown {
+    font-size: 1.75rem;
+  }
+}
