@@ -10,9 +10,15 @@
   margin: 0;
 }
 
+/* Die App ist eine feste Fläche, kein Dokument. Nur der Inhalt in der Mitte
+   scrollt - und auch nur dann, wenn er wirklich nicht auf den Bildschirm
+   passt. Ohne das federt auf dem iPhone die ganze Seite bei jeder Berührung
+   mit, auch auf Bildschirmen, die längst vollständig zu sehen sind. */
 html,
 body {
   height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
 }
 
 body {
@@ -23,7 +29,6 @@ body {
   background-color: var(--paper);
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
-  overscroll-behavior-y: none;
 }
 
 button,
@@ -65,10 +70,14 @@ h3 {
 .app {
   display: flex;
   flex-direction: column;
-  min-height: 100svh;
+  height: 100%;
   max-width: var(--app-max);
   margin-inline: auto;
-  padding-inline: max(env(safe-area-inset-left), 0px) max(env(safe-area-inset-right), 0px);
+  /* Die Sicherheitsabstände sitzen hier und nicht in den Leisten. Sonst
+     steht der Startbildschirm, der gar keine Topbar hat, unter der Uhr
+     und der Dynamic Island. */
+  padding: env(safe-area-inset-top) max(env(safe-area-inset-right), 0px)
+    env(safe-area-inset-bottom) max(env(safe-area-inset-left), 0px);
 }
 
 /* Auf breiten Displays steht die Spalte als Blatt im Raum. */
@@ -79,11 +88,8 @@ h3 {
 }
 
 .topbar {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  padding: calc(env(safe-area-inset-top) + var(--space-4)) var(--space-4)
-    var(--space-3);
+  flex: none;
+  padding: var(--space-4) var(--space-4) var(--space-3);
   background: var(--paper);
   border-bottom: 1px solid var(--ink);
 }
@@ -94,6 +100,12 @@ h3 {
 
 .screen {
   flex: 1;
+  /* Lässt den Bereich in der Flexspalte überhaupt schrumpfen - ohne das
+     wächst er über den Bildschirm hinaus, statt zu scrollen. */
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
@@ -111,15 +123,12 @@ h3 {
 }
 
 .actionbar {
-  position: sticky;
-  bottom: 0;
-  z-index: 10;
+  flex: none;
   display: flex;
   flex-direction: column;
   /* Der harte Schatten der Knöpfe braucht Platz nach unten. */
   gap: var(--space-4);
-  padding: var(--space-4) var(--space-4)
-    calc(env(safe-area-inset-bottom) + var(--space-4));
+  padding: var(--space-4);
   background: var(--paper);
   border-top: 1px solid var(--ink);
 }
@@ -129,7 +138,11 @@ h3 {
 }
 
 .visually-hidden {
+  /* Oben links verankert, sonst haengt das Element hinter der App und
+     macht die Seite einen Pixel zu hoch - genug fuer einen Wackler. */
   position: absolute;
+  top: 0;
+  left: 0;
   width: 1px;
   height: 1px;
   padding: 0;

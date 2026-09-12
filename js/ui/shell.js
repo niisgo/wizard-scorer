@@ -30,7 +30,8 @@ export function paint(view) {
   clear(refs.actionbar);
   append(refs.actionbar, view.actions ?? []);
 
-  window.scrollTo({ top: 0 });
+  // Gescrollt wird nur der Inhaltsbereich, nicht das Fenster.
+  refs.screen.scrollTop = 0;
   playEnterAnimation();
   announce(view);
 }
