@@ -8,7 +8,7 @@
    Das Projekt hat bewusst keinen Build-Schritt, deshalb steht die Liste der
    Dateien hier von Hand. Neue Datei angelegt? Hier eintragen. */
 
-const CACHE = "wizard-scorer-v1";
+const CACHE = "wizard-scorer-v2";
 
 const ASSETS = [
   "./",
@@ -44,10 +44,10 @@ const ASSETS = [
   "./js/screens/tricks.js",
   "./js/screens/final.js",
 
-  "./fonts/cinzel-latin.woff2",
-  "./fonts/cinzel-latin-ext.woff2",
-  "./fonts/inter-latin.woff2",
-  "./fonts/inter-latin-ext.woff2",
+  "./fonts/anton-latin.woff2",
+  "./fonts/anton-latin-ext.woff2",
+  "./fonts/archivo-latin.woff2",
+  "./fonts/archivo-latin-ext.woff2",
 
   "./icons/favicon.svg",
   "./icons/icon-192.png",
