@@ -7,7 +7,7 @@ import { canInstall, promptInstall } from "../pwa.js";
 import { MAX_PLAYERS, MIN_PLAYERS, totalRounds } from "../rules.js";
 import { go } from "../router.js";
 import { getGame } from "../store.js";
-import { button, doubleRule, entry, section } from "../ui/widgets.js";
+import { button, entry, section } from "../ui/widgets.js";
 
 let chosenCount = 4;
 
@@ -34,7 +34,7 @@ function wordmark() {
   return el("div", { class: "wordmark" }, [
     el("p", { class: "wordmark__eyebrow", text: "Punkteblock" }),
     el("h1", { class: "wordmark__name", text: "Wizard" }),
-    doubleRule({ short: true }),
+    el("div", { class: "wordmark__bar", "aria-hidden": "true" }),
     el("p", {
       class: "wordmark__lead",
       text: "Die App sagt an, was ausgeteilt wird, passt auf die Ansagen auf und rechnet. Ihr spielt.",

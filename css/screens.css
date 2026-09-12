@@ -1,103 +1,97 @@
-/* Die einzelnen Bildschirme. */
-
-/* Doppellinie - das Trennzeichen aus dem Buchsatz. */
-.rule-double {
-  height: 4px;
-  border-top: 1px solid var(--brass-dim);
-  border-bottom: 1px solid var(--brass-dim);
-}
-
-.rule-double--short {
-  width: 84px;
-  margin-inline: auto;
-}
+/* Die einzelnen Bildschirme im Entwurf "Plakat". */
 
 /* --- Titelseite ---------------------------------------------------------- */
 
 .wordmark {
-  padding-block: var(--space-6) var(--space-2);
-  text-align: center;
+  padding-block: var(--space-5) var(--space-2);
 }
 
 .wordmark__eyebrow {
-  font-family: var(--display);
   font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.34em;
-  text-indent: 0.34em;
+  font-weight: 700;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--brass);
+  color: var(--mark);
 }
 
 .wordmark__name {
-  margin-block: var(--space-4) var(--space-4);
+  margin-top: var(--space-2);
   font-family: var(--display);
-  font-size: clamp(2.5rem, 13vw, 3.25rem);
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-indent: 0.16em;
-  color: var(--ink);
+  font-weight: 400;
+  font-size: clamp(3.5rem, 19vw, 5rem);
+  line-height: 0.86;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+}
+
+/* Der Zinnober-Balken unter dem Titel trägt die Signalfarbe einmal
+   gross - danach kommt sie nur noch sparsam vor. */
+.wordmark__bar {
+  height: 10px;
+  margin-top: var(--space-4);
+  background: var(--acc);
 }
 
 .wordmark__lead {
-  max-width: 30ch;
-  margin: var(--space-4) auto 0;
+  margin-top: var(--space-4);
+  max-width: 34ch;
   font-size: 0.9375rem;
-  color: var(--ink-dim);
+  color: var(--dim);
 }
 
 .picker {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  gap: 7px;
 }
 
 .picker__option {
   min-height: 76px;
-  margin-right: -1px;
-  border: 1px solid var(--rule);
+  border: var(--bw) solid var(--ink);
+  background: var(--paper);
+  color: var(--ink);
   font-family: var(--ui);
   font-size: 1.625rem;
-  font-weight: 500;
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
-  color: var(--ink);
-  background: transparent;
-  transition: background 0.1s linear, color 0.1s linear;
 }
 
 .picker__option[aria-checked="true"] {
-  position: relative;
-  z-index: 1;
-  color: var(--on-brass);
-  background: var(--brass);
-  border-color: var(--brass);
+  background: var(--pick);
+  color: var(--pick-ink);
   font-weight: 700;
+  box-shadow: var(--drop-sm) var(--drop-sm) 0 var(--ink);
 }
 
 .picker__hint {
   font-size: 0.875rem;
-  color: var(--ink-dim);
+  color: var(--dim);
 }
 
 .resume__meta {
   font-size: 0.9375rem;
-  color: var(--ink-dim);
+  color: var(--dim);
 }
 
 /* --- Namen --------------------------------------------------------------- */
 
 .namerow {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: var(--space-3);
 }
 
 .namerow__seat {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
   flex: none;
-  width: 1.4em;
-  font-family: var(--display);
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--brass);
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
 }
 
 /* --- Austeil-Ansage ------------------------------------------------------ */
@@ -108,28 +102,20 @@
 }
 
 .deal__count {
-  font-family: var(--ui);
-  font-size: clamp(5rem, 30vw, 7rem);
-  font-weight: 600;
-  line-height: 0.88;
-  letter-spacing: -0.04em;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(6rem, 36vw, 8.5rem);
+  line-height: 0.82;
   font-variant-numeric: tabular-nums;
-  color: var(--ink);
 }
 
 .deal__unit {
   margin-top: var(--space-4);
-  font-family: var(--display);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.24em;
-  text-indent: 0.24em;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.19em;
   text-transform: uppercase;
-  color: var(--ink-dim);
-}
-
-.deal__tally {
-  margin-top: var(--space-5);
+  color: var(--dim);
 }
 
 /* --- Ansagen ------------------------------------------------------------- */
@@ -137,7 +123,7 @@
 /* Die Tafel oben: alle Spieler der Runde in Ansage-Reihenfolge. */
 .slate {
   display: flex;
-  border-block: 1px solid var(--rule);
+  border-block: 1px solid var(--ink);
 }
 
 .slate__seat {
@@ -149,20 +135,20 @@
 }
 
 .slate__seat + .slate__seat {
-  border-left: 1px solid var(--rule);
+  border-left: 1px solid var(--ink);
 }
 
 .slate__seat.is-current {
-  background: var(--raised);
+  background: var(--sunk);
 }
 
 .slate__name {
   display: block;
   font-size: 0.625rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
+  font-weight: 700;
+  letter-spacing: 0.11em;
   text-transform: uppercase;
-  color: var(--ink-faint);
+  color: var(--dim);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -170,20 +156,15 @@
 
 .slate__bid {
   display: block;
-  margin-top: 2px;
-  font-size: 1.125rem;
-  font-weight: 600;
+  margin-top: 3px;
+  font-size: 1.1875rem;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
-  color: var(--ink-faint);
-}
-
-.slate__seat.is-done .slate__bid {
-  color: var(--ink);
 }
 
 .slate__seat.is-current .slate__name,
 .slate__seat.is-current .slate__bid {
-  color: var(--brass);
+  color: var(--acc);
 }
 
 /* Liegt über der ganzen Spalte: antippen korrigiert die Ansage. */
@@ -198,21 +179,20 @@
 }
 
 .turn__label {
-  font-family: var(--display);
   font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.24em;
-  text-indent: 0.24em;
+  font-weight: 700;
+  letter-spacing: 0.17em;
   text-transform: uppercase;
-  color: var(--ink-faint);
+  color: var(--dim);
 }
 
 .turn__name {
   margin-top: var(--space-2);
   font-family: var(--display);
-  font-size: clamp(1.75rem, 9vw, 2.375rem);
-  font-weight: 700;
-  letter-spacing: 0.04em;
+  font-weight: 400;
+  font-size: clamp(2.25rem, 11vw, 3rem);
+  line-height: 1;
+  text-transform: uppercase;
   overflow-wrap: anywhere;
 }
 
@@ -222,15 +202,15 @@
   margin: 0;
   padding: 0;
   list-style: none;
-  border-top: 1px solid var(--rule);
+  border-top: 1px solid var(--ink);
 }
 
 .trickrow {
-  border-bottom: 1px solid var(--rule);
+  border-bottom: 1px solid var(--ink);
 }
 
 .trickrow.is-open {
-  background: var(--panel);
+  background: var(--sunk);
 }
 
 .trickrow__head {
@@ -238,7 +218,7 @@
   align-items: center;
   gap: var(--space-3);
   width: 100%;
-  min-height: 58px;
+  min-height: 60px;
   padding: var(--space-2) 0;
   text-align: left;
 }
@@ -247,9 +227,9 @@
   flex: 1;
   min-width: 0;
   font-family: var(--display);
-  font-size: 1.0625rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  font-weight: 400;
+  font-size: 1.25rem;
+  text-transform: uppercase;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -257,33 +237,34 @@
 
 .trickrow__bid {
   flex: none;
-  font-size: 0.6875rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.11em;
   text-transform: uppercase;
-  color: var(--ink-faint);
+  color: var(--dim);
 }
 
 .trickrow__value {
   display: grid;
   place-items: center;
   width: 46px;
-  height: 40px;
+  height: 42px;
   flex: none;
-  border: 1px solid var(--rule-strong);
+  border: var(--bw) solid var(--ink);
+  background: var(--paper);
   font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
 
 .trickrow__value.is-empty {
-  color: var(--ink-faint);
+  color: var(--faint);
+  border-color: var(--faint);
 }
 
 .trickrow__value.is-hit {
-  color: var(--on-brass);
-  background: var(--brass);
-  border-color: var(--brass);
+  background: var(--pick);
+  color: var(--pick-ink);
 }
 
 .trickrow .numgrid {
@@ -296,29 +277,35 @@
   margin: 0;
   padding: 0;
   list-style: none;
-  border-top: 1px solid var(--rule);
+  border-top: 1px solid var(--ink);
 }
 
 .ledger__row {
   display: flex;
-  align-items: baseline;
-  gap: var(--space-2);
-  min-height: 58px;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 62px;
   padding-block: var(--space-3);
-  border-bottom: 1px solid var(--rule);
+  border-bottom: 1px solid var(--ink);
 }
 
+/* Der Platz steht in einem vollen Kästchen, wie auf einem Plakat. */
 .ledger__rank {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
   flex: none;
-  width: 1.5em;
-  font-family: var(--display);
-  font-size: 0.8125rem;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 0.75rem;
   font-weight: 700;
-  color: var(--ink-faint);
+  font-variant-numeric: tabular-nums;
 }
 
 .ledger__row.is-lead .ledger__rank {
-  color: var(--brass);
+  background: var(--acc);
+  color: var(--acc-ink);
 }
 
 .ledger__who {
@@ -329,9 +316,10 @@
 .ledger__name {
   display: block;
   font-family: var(--display);
-  font-size: 1.125rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  font-weight: 400;
+  font-size: 1.25rem;
+  line-height: 1.1;
+  text-transform: uppercase;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -339,42 +327,48 @@
 
 .ledger__sub {
   display: block;
-  font-size: 0.6875rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
+  margin-top: 2px;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
-  color: var(--ink-faint);
+  color: var(--dim);
+}
+
+.ledger__gap {
+  flex: 1;
+  min-width: var(--space-2);
 }
 
 .ledger__delta {
   flex: none;
   font-size: 0.8125rem;
-  font-weight: 600;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
 
 .ledger__total {
   flex: none;
-  min-width: 2.6em;
+  min-width: 2.4em;
   text-align: right;
-  font-size: 1.5rem;
-  font-weight: 600;
+  font-size: 1.625rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
-  color: var(--ink);
 }
 
 .is-gain {
-  color: var(--gain);
+  color: var(--mark);
 }
 
 .is-loss {
-  color: var(--loss);
+  color: var(--bad);
 }
 
 /* --- Rundenverlauf ------------------------------------------------------- */
 
 .history {
-  border-top: 1px solid var(--rule);
+  border-top: 1px solid var(--ink);
 }
 
 .history__summary {
@@ -382,12 +376,11 @@
   align-items: center;
   justify-content: space-between;
   padding-block: var(--space-3);
-  font-family: var(--display);
   font-size: 0.6875rem;
   font-weight: 700;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.17em;
   text-transform: uppercase;
-  color: var(--brass);
+  color: var(--mark);
   cursor: pointer;
   list-style: none;
 }
@@ -398,10 +391,10 @@
 
 .history__summary::after {
   content: "+";
-  font-family: var(--ui);
-  font-size: 1rem;
+  font-size: 1.125rem;
+  font-weight: 600;
   letter-spacing: 0;
-  color: var(--ink-faint);
+  color: var(--ink);
 }
 
 .history[open] .history__summary::after {
@@ -422,71 +415,70 @@
 
 .history__table th,
 .history__table td {
-  padding: var(--space-2) var(--space-2);
+  padding: var(--space-2);
   text-align: right;
   white-space: nowrap;
-  border-bottom: 1px solid var(--rule);
+  border-bottom: 1px solid var(--hair);
 }
 
 .history__table thead th {
-  font-family: var(--display);
   font-size: 0.625rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--ink-faint);
-  border-bottom-color: var(--rule-strong);
+  color: var(--dim);
+  border-bottom: 1px solid var(--ink);
 }
 
 .history__table tbody th {
   padding-left: 0;
   text-align: left;
-  font-family: var(--ui);
   font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--ink-faint);
+  font-weight: 600;
+  color: var(--dim);
 }
 
 .history__delta {
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .history__running {
   display: block;
   font-size: 0.625rem;
-  color: var(--ink-faint);
+  color: var(--faint);
 }
 
 /* --- Schlussseite -------------------------------------------------------- */
 
 .laurel {
-  padding-block: var(--space-5) var(--space-4);
+  padding: var(--space-5) var(--space-4);
+  border: var(--bw) solid var(--ink);
+  box-shadow: var(--drop) var(--drop) 0 var(--acc);
   text-align: center;
 }
 
 .laurel__label {
-  font-family: var(--display);
   font-size: 0.6875rem;
   font-weight: 700;
-  letter-spacing: 0.34em;
-  text-indent: 0.34em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--brass);
+  color: var(--mark);
 }
 
 .laurel__name {
-  margin-block: var(--space-4);
+  margin-top: var(--space-3);
   font-family: var(--display);
-  font-size: clamp(2rem, 10vw, 2.75rem);
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  font-weight: 400;
+  font-size: clamp(2.5rem, 13vw, 3.5rem);
+  line-height: 0.92;
+  text-transform: uppercase;
   overflow-wrap: anywhere;
 }
 
 .laurel__score {
-  margin-top: var(--space-4);
+  margin-top: var(--space-3);
   font-size: 0.9375rem;
-  color: var(--ink-dim);
+  color: var(--dim);
 }
 
 /* --- Handy im Querformat ------------------------------------------------- */
@@ -494,7 +486,11 @@
 /* Steht am Ende: überschreibt bewusst die Grundgrössen von weiter oben. */
 @media (orientation: landscape) and (max-height: 560px) {
   .wordmark {
-    padding-block: var(--space-4) 0;
+    padding-block: var(--space-3) 0;
+  }
+
+  .wordmark__name {
+    font-size: clamp(2.5rem, 11vh, 3.5rem);
   }
 
   .wordmark__lead {
@@ -506,15 +502,7 @@
   }
 
   .deal__count {
-    font-size: clamp(3rem, 22vh, 4.5rem);
-  }
-
-  .deal__tally {
-    margin-top: var(--space-3);
-  }
-
-  .tally__group i {
-    height: 20px;
+    font-size: clamp(3.5rem, 26vh, 5.5rem);
   }
 
   .turn {
@@ -522,10 +510,10 @@
   }
 
   .turn__name {
-    font-size: clamp(1.5rem, 7vh, 2rem);
+    font-size: clamp(1.75rem, 9vh, 2.5rem);
   }
 
   .laurel {
-    padding-block: var(--space-3) var(--space-2);
+    padding: var(--space-3) var(--space-4);
   }
 }

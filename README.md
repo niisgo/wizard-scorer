@@ -40,23 +40,25 @@ aufgehen.
 
 ## Gestaltung
 
-Vorbild ist kein App-Dashboard, sondern der Punktezettel selbst: ein Kontobuch
-auf dem Spieltisch.
+Vorbild ist ein gedrucktes Plakat, nicht eine Oberfläche: weisses Papier,
+schwarze Konturen, Zinnober als Signalfarbe.
 
-- **Farben** kommen vom Tisch: matter, dunkler Filz als Grund, gealtertes
-  Messing als einzige Akzentfarbe, Pergament für die Schrift. Keine Verläufe.
-  Die helle Variante ist dasselbe in Tinte auf Papier.
-- **Getrennt wird mit 1px-Haarlinien**, nicht mit Schlagschatten oder Kästen.
-  Es gibt bewusst keine „Karten": Abschnitte stehen direkt auf der Seite unter
-  einer gesetzten Rubrik.
-- **Typografie** zweigeteilt: [Cinzel](https://github.com/NDISCOVER/Cinzel) für
-  Überschriften, Rubriken und Knöpfe, [Inter](https://github.com/rsms/inter)
-  für jede Zahl. Am Tisch darf sich niemand verlesen, deshalb sind alle Werte
-  serifenlos, mit Tabellenziffern und gross gesetzt.
-- **Details statt Deko**: gepunktete Führungslinien wie im
-  Inhaltsverzeichnis, eine Strichliste für die Kartenzahl, ein Strich je Runde
-  als Fortschritt – und eine gesperrte Ansage wird diagonal durchgestrichen,
-  so wie man es auf Papier täte.
+- **Weiss als Grund**, nicht Creme oder Grau. Darauf Schwarz, ein Zinnober
+  (`#dc3b1e`) für alles Aktive, Senfgelb (`#e9a81c`) für das, was gerade
+  ausgewählt ist, und Petrol (`#0f6b62`) für Rubriken und Punktgewinne.
+  Keine Verläufe, keine weichen Schatten, keine Rundungen.
+- **Zwei Linienstärken mit klarer Bedeutung:** 1px schwarz trennt Zeilen,
+  2px schwarz umrandet alles, was man anfassen kann.
+- **Harte versetzte Schatten.** Knöpfe und ausgewählte Felder werfen einen
+  5px-Schatten ohne Weichzeichner und rutschen beim Drücken darauf – das
+  gibt am Tisch eine spürbare Rückmeldung, ganz ohne Animation.
+- **Typografie zweigeteilt:** [Anton](https://github.com/googlefonts/AntonFont)
+  für Überschriften, Namen und die grosse Kartenzahl,
+  [Archivo](https://github.com/Omnibus-Type/Archivo) für jede Punktzahl.
+  Am Tisch darf sich niemand verlesen, deshalb stehen alle Werte in Archivo
+  mit Tabellenziffern.
+- **Dunkel ist dasselbe Plakat, schwarz gedruckt:** gleiche Konturen,
+  gleiche Signalfarben, Papier und Tinte tauschen die Rollen.
 - Beide Schriften liegen im Repo (siehe [fonts/](fonts/)), damit die App
   offline gleich aussieht und beim Öffnen keine Verbindung zu einem CDN
   aufbaut.
@@ -92,9 +94,9 @@ index.html            App-Hülle
 sw.js                 Service Worker (Dateiliste von Hand gepflegt)
 manifest.webmanifest  PWA-Manifest
 css/
-  tokens.css          Farben und Abstände, hell wie dunkel
+  tokens.css          Farben, Abstände, Linienstärken – hell wie dunkel
   base.css            Reset und Layout
-  components.css      Buttons, Karten, Zahlenraster, Bottom-Sheet
+  components.css      Knöpfe, Zahlenraster, Rubriken, Bottom-Sheet
   screens.css         Screen-spezifisches
 js/
   rules.js            Die Wizard-Regeln als reine Funktionen

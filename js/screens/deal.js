@@ -6,7 +6,7 @@ import { resume } from "../flow.js";
 import { bidOrder, cards, confirmDeal, dealer, roundsTotal } from "../game.js";
 import { getGame, update } from "../store.js";
 import { menuButton } from "../ui/menu.js";
-import { button, entry, note, section, tally, ticks } from "../ui/widgets.js";
+import { button, entry, note, section, ticks } from "../ui/widgets.js";
 
 export function dealScreen() {
   const game = getGame();
@@ -48,7 +48,6 @@ function announcement(count) {
       class: "deal__unit",
       text: count === 1 ? "Karte pro Spieler" : "Karten pro Spieler",
     }),
-    el("div", { class: "deal__tally" }, tally(count)),
     // Für Screenreader die ganze Aussage in einem Stück.
     el("p", {
       class: "visually-hidden",

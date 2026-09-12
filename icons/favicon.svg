@@ -1,11 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Wizard Scorer">
-  <rect width="64" height="64" rx="9" fill="#0f1a14" />
-  <rect x="2.5" y="2.5" width="59" height="59" rx="7" fill="none" stroke="#7e6930" stroke-width="1.4" />
-  <rect x="6" y="6" width="52" height="52" rx="5" fill="none" stroke="#4a4326" stroke-width="0.8" />
-  <g fill="#c2a059">
-    <path d="M8.54 18 L16.82 18 L24.25 38.55 L30.39 23.6 L36.14 23.6 L42.28 38.55 L49.71 18 L52.93 18 L42.81 46 L37.06 46 L30.74 30.6 L24.41 46 L18.66 46 Z" />
-    <rect x="5.8" y="17.9" width="13.8" height="1.5" />
-    <rect x="44.4" y="17.9" width="13.8" height="1.5" />
-    <rect x="28.4" y="23.5" width="9.7" height="1.4" />
-  </g>
+  <rect width="64" height="64" fill="#ffffff" />
+  <rect x="2" y="2" width="60" height="60" fill="none" stroke="#111111" stroke-width="4" />
+  <path fill="#dc3b1e" d="M9.34 15 L18.58 15 L23.38 32.67 L27.38 19.08 L36.62 19.08 L40.62 32.67 L45.42 15 L54.66 15 L45.42 49 L36.18 49 L32 34.79 L27.82 49 L18.58 49 Z" />
 </svg>

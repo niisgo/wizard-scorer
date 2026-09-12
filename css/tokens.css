@@ -1,42 +1,38 @@
-/* Die Palette kommt vom Spieltisch: dunkler, matter Filz als Grund, mattes
-   Messing als einzige Akzentfarbe, Pergament für die Schrift. Kein Verlauf,
-   kein Neon - Flächen sind flach, getrennt wird mit Haarlinien.
+/* Entwurf "Plakat": gedruckt statt gerendert.
 
-   Die helle Variante ist Pergament: dieselbe Typografie, dieselben Linien,
-   nur Tinte auf Papier statt Kreide auf Filz. */
+   Weisses Papier, schwarze Konturen, Zinnober als Signalfarbe, Senfgelb
+   für die Auswahl, Petrol für Rubriken und Gewinne. Keine Verläufe, keine
+   weichen Schatten, keine Rundungen - Flächen sind flach, Kanten hart.
+
+   Zwei Linienstärken mit klarer Bedeutung:
+   1px schwarz trennt (Zeilen, Kopf, Fuss),
+   2px schwarz umrandet alles, was man anfassen kann. */
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 
-  --felt-deep: #0b1410;
-  --felt: #0f1a14;
-  --felt-raised: #15251c;
-  --felt-high: #1c3125;
+  --paper: #ffffff;
+  --sunk: #f4f2ee;
 
-  --bg: var(--felt-deep);
-  --panel: var(--felt);
-  --raised: var(--felt-raised);
+  --ink: #111111;
+  --dim: #6b6b6b;
+  --faint: #9a9a9a;
 
-  --ink: #f0e7d3;
-  --ink-dim: #a1977f;
-  --ink-faint: #6b644f;
-  --on-brass: #0b1410;
+  /* feine Linie für Tabellen und Rasterspuren, wo Schwarz zu laut wäre */
+  --hair: #dcdcdc;
 
-  --brass: #c2a059;
-  --brass-bright: #dcbe7d;
-  --brass-dim: #7e6930;
+  --acc: #dc3b1e;
+  --acc-ink: #ffffff;
 
-  /* Haarlinien - das einzige Trennmittel in dieser Oberfläche. */
-  --rule: #22362a;
-  --rule-strong: #3b5643;
+  --pick: #e9a81c;
+  --pick-ink: #111111;
 
-  --loss: #cb7565;
-  --gain: var(--brass);
+  --mark: #0f6b62;
+  --bad: #dc3b1e;
 
-  /* Stärke der Papierkörnung über dem Hintergrund. */
-  --grain: 0.05;
-
-  --r: 2px;
+  --bw: 2px;
+  --drop: 5px;
+  --drop-sm: 3px;
 
   --space-1: 4px;
   --space-2: 8px;
@@ -46,63 +42,59 @@
   --space-6: 32px;
   --space-7: 48px;
 
-  /* Cinzel für alles Gesetzte, Inter für alles Gelesene und jede Zahl. */
-  --display: "Cinzel", "Iowan Old Style", Georgia, "Times New Roman", serif;
-  --ui: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial,
+  /* Anton für alles Gesetzte, Archivo für alles Gelesene und jede Zahl. */
+  --display: "Anton", "Arial Narrow", Impact, sans-serif;
+  --ui: "Archivo", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial,
     sans-serif;
 
   --app-max: 560px;
-  --tap: 52px;
+  --tap: 54px;
 }
 
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme="dark"]) {
-    color-scheme: light;
+/* Dunkel ist dasselbe Plakat, nur schwarz gedruckt: gleiche Konturen,
+   gleiche Signalfarben, nur Papier und Tinte tauschen die Rollen. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
 
-    --bg: #e5d9bd;
-    --panel: #ece2ca;
-    --raised: #e0d4b4;
+    --paper: #0d0d0d;
+    --sunk: #1c1c1c;
 
-    --ink: #1e180f;
-    --ink-dim: #574d3a;
-    --ink-faint: #8a7f66;
-    --on-brass: #f7f0dd;
+    --ink: #ffffff;
+    --dim: #9a9a9a;
+    --faint: #6e6e6e;
 
-    --brass: #8a6a22;
-    --brass-bright: #a4832f;
-    --brass-dim: #b5a271;
+    --hair: #303030;
 
-    --rule: #c8b892;
-    --rule-strong: #a08f68;
+    --acc: #f04a2a;
+    --acc-ink: #ffffff;
 
-    --loss: #96301f;
-    --gain: #6d5417;
+    --pick: #f0b52a;
+    --pick-ink: #111111;
 
-    --grain: 0.1;
+    --mark: #45c3b1;
+    --bad: #ff6a4d;
   }
 }
 
-:root[data-theme="light"] {
-  color-scheme: light;
+:root[data-theme="dark"] {
+  color-scheme: dark;
 
-  --bg: #e5d9bd;
-  --panel: #ece2ca;
-  --raised: #e0d4b4;
+  --paper: #0d0d0d;
+  --sunk: #1c1c1c;
 
-  --ink: #1e180f;
-  --ink-dim: #574d3a;
-  --ink-faint: #8a7f66;
-  --on-brass: #f7f0dd;
+  --ink: #ffffff;
+  --dim: #9a9a9a;
+  --faint: #6e6e6e;
 
-  --brass: #8a6a22;
-  --brass-bright: #a4832f;
-  --brass-dim: #b5a271;
+  --hair: #303030;
 
-  --rule: #c8b892;
-  --rule-strong: #a08f68;
+  --acc: #f04a2a;
+  --acc-ink: #ffffff;
 
-  --loss: #96301f;
-  --gain: #6d5417;
+  --pick: #f0b52a;
+  --pick-ink: #111111;
 
-  --grain: 0.1;
+  --mark: #45c3b1;
+  --bad: #ff6a4d;
 }

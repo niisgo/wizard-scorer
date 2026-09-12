@@ -1,10 +1,9 @@
 /* Erzeugt die App-Icons als PNG - ohne Abhängigkeiten, direkt aus Node.
    Start: npm run icons
 
-   Motiv ist kein Bildchen, sondern ein Monogramm: ein W mit römischem
-   Strichkontrast in Messing, eingefasst von einer doppelten Haarlinie -
-   wie die Prägung auf einem Buchdeckel. Das bleibt auch bei 48 Pixeln
-   lesbar und sieht nicht aus wie ein Aufkleber.
+   Motiv im Entwurf "Plakat": ein schweres, schmales W in Zinnober auf
+   weissem Papier, eingefasst von einem dicken schwarzen Rahmen. Keine
+   abgerundeten Ecken - der Rahmen gibt die Form vor.
 
    Gerendert wird mit vierfachem Supersampling gegen harte Kanten. */
 
@@ -18,36 +17,35 @@ const SAMPLES = 4;
 
 /* --- Farben (identisch mit den Design-Tokens) ---------------------------- */
 
-const FELT = [15, 26, 20];
-const BRASS = [194, 160, 89];
-const FRAME = mix(FELT, BRASS, 0.55);
-const FRAME_INNER = mix(FELT, BRASS, 0.3);
+const PAPER = [255, 255, 255];
+const INK = [17, 17, 17];
+const ACC = [220, 59, 30];
 
 /* --- Das W --------------------------------------------------------------- */
 
-/* Die vier Stämme des W als Mittellinien im Einheitsquadrat des
-   Schriftfelds. Abwärtsstriche sind fett, Aufwärtsstriche dünn - so bauen
-   römische Kapitalis-Schriften ihren Kontrast auf. `h` ist die halbe
-   waagerecht gemessene Strichstärke. */
-const APEX_Y = 0.2;
+/* Die vier Stämme als Mittellinien im Einheitsquadrat des Schriftfelds.
+   Anders als bei einer Antiqua sind hier alle Striche gleich schwer und
+   die Enden glatt geschnitten - so baut eine fette Grotesk ihr W.
+   `h` ist die halbe waagerecht gemessene Strichstärke. */
+const APEX_Y = 0.12;
+const WEIGHT = 0.105;
 const STEMS = [
-  { a: [0.08, 0], b: [0.3, 1], h: 0.09 },
-  { a: [0.3, 1], b: [0.5, APEX_Y], h: 0.035 },
-  { a: [0.5, APEX_Y], b: [0.7, 1], h: 0.09 },
-  { a: [0.7, 1], b: [0.92, 0], h: 0.035 },
+  { a: [0.09, 0], b: [0.3, 1], h: WEIGHT },
+  { a: [0.3, 1], b: [0.5, APEX_Y], h: WEIGHT },
+  { a: [0.5, APEX_Y], b: [0.7, 1], h: WEIGHT },
+  { a: [0.7, 1], b: [0.91, 0], h: WEIGHT },
 ];
 
 const [S1, S2, S3, S4] = STEMS;
 
-/* Der Umriss, im Uhrzeigersinn oben links beginnend. Die Spitzen entstehen
-   dort, wo sich zwei Stammkanten schneiden - deshalb wird gerechnet statt
-   Striche mit runden Enden übereinanderzulegen. */
+/* Der Umriss, im Uhrzeigersinn oben links beginnend. Die Kerben entstehen
+   dort, wo sich zwei Stammkanten schneiden. */
 const OUTLINE = [
   [edgeX(S1, -1, 0), 0],
   [edgeX(S1, 1, 0), 0],
   meet(S1, 1, S2, -1), // Kerbe im linken V
   [edgeX(S2, -1, APEX_Y), APEX_Y],
-  [edgeX(S3, 1, APEX_Y), APEX_Y], // geschnittene Spitze in der Mitte
+  [edgeX(S3, 1, APEX_Y), APEX_Y], // glatt geschnittene Spitze in der Mitte
   meet(S3, 1, S4, -1), // Kerbe im rechten V
   [edgeX(S4, -1, 0), 0],
   [edgeX(S4, 1, 0), 0],
@@ -56,13 +54,6 @@ const OUTLINE = [
   meet(S3, -1, S2, 1), // Tal zwischen den beiden V
   [edgeX(S2, 1, 1), 1],
   [edgeX(S1, -1, 1), 1],
-];
-
-/* Waagerechte Serifen an den oberen Enden und auf der Mittelspitze. */
-const SERIFS = [
-  { cx: 0.08, cy: 0.024, w: 0.3, h: 0.048 },
-  { cx: 0.92, cy: 0.024, w: 0.3, h: 0.048 },
-  { cx: 0.5275, cy: 0.222, w: 0.21, h: 0.044 },
 ];
 
 /** x-Wert einer Stammkante (-1 links, +1 rechts) auf Höhe y. */
@@ -94,58 +85,38 @@ function inPolygon(x, y, points) {
   return inside;
 }
 
-const LETTER = { x0: 0.19, x1: 0.81, y0: 0.31, y1: 0.71 };
-const FRAME_INSET = 0.0;
-const FRAME_STROKE = 0.018;
-const INNER_INSET = 0.052;
-const INNER_STROKE = 0.009;
+const LETTER = { x0: 0.24, x1: 0.76, y0: 0.26, y1: 0.74 };
+const FRAME_STROKE = 0.04;
 
 /**
- * Farbe an einem Punkt der Inhaltsfläche (0..1), oder null für Hintergrund.
+ * Farbe an einem Punkt der Inhaltsfläche (0..1), oder null für Papier.
  */
 function markAt(x, y) {
-  if (onFrame(x, y, FRAME_INSET, FRAME_STROKE)) return FRAME;
-  if (onFrame(x, y, INNER_INSET, INNER_STROKE)) return FRAME_INNER;
+  if (
+    x < FRAME_STROKE ||
+    x > 1 - FRAME_STROKE ||
+    y < FRAME_STROKE ||
+    y > 1 - FRAME_STROKE
+  ) {
+    return INK;
+  }
 
   // In das Einheitsquadrat des Buchstabens umrechnen.
   const lx = (x - LETTER.x0) / (LETTER.x1 - LETTER.x0);
   const ly = (y - LETTER.y0) / (LETTER.y1 - LETTER.y0);
   if (lx < -0.2 || lx > 1.2 || ly < -0.2 || ly > 1.2) return null;
 
-  for (const serif of SERIFS) {
-    if (
-      Math.abs(lx - serif.cx) <= serif.w / 2 &&
-      Math.abs(ly - serif.cy) <= serif.h / 2
-    ) {
-      return BRASS;
-    }
-  }
-
-  return inPolygon(lx, ly, OUTLINE) ? BRASS : null;
+  return inPolygon(lx, ly, OUTLINE) ? ACC : null;
 }
-
-function onFrame(x, y, inset, stroke) {
-  const low = inset;
-  const high = 1 - inset;
-  if (x < low || x > high || y < low || y > high) return false;
-  const inner = stroke;
-  return (
-    x < low + inner || x > high - inner || y < low + inner || y > high - inner
-  );
-}
-
 
 /* --- Zeichnen ------------------------------------------------------------ */
 
 /**
  * @param {number} size Kantenlänge in Pixeln
- * @param {object} options
- * @param {number} options.padding Rand um die Zeichnung (Anteil der Kante)
- * @param {boolean} options.rounded abgerundete Ecken statt randlos
+ * @param {number} padding Rand um die Zeichnung (Anteil der Kante)
  */
-function render(size, { padding, rounded }) {
+function render(size, padding) {
   const pixels = Buffer.alloc(size * size * 4);
-  const radius = size * 0.2;
   const step = 1 / SAMPLES;
   const total = SAMPLES * SAMPLES;
 
@@ -154,52 +125,29 @@ function render(size, { padding, rounded }) {
       let r = 0;
       let g = 0;
       let b = 0;
-      let hits = 0;
 
       for (let sy = 0; sy < SAMPLES; sy += 1) {
         for (let sx = 0; sx < SAMPLES; sx += 1) {
-          const x = (px + (sx + 0.5) * step) / size;
-          const y = (py + (sy + 0.5) * step) / size;
-
-          if (rounded && !inRoundedSquare(x * size, y * size, size, radius)) continue;
-
-          const nx = (x - padding) / (1 - 2 * padding);
-          const ny = (y - padding) / (1 - 2 * padding);
-          const inside = nx >= 0 && nx <= 1 && ny >= 0 && ny <= 1;
-          const color = (inside ? markAt(nx, ny) : null) ?? FELT;
+          const x = ((px + (sx + 0.5) * step) / size - padding) / (1 - 2 * padding);
+          const y = ((py + (sy + 0.5) * step) / size - padding) / (1 - 2 * padding);
+          const inside = x >= 0 && x <= 1 && y >= 0 && y <= 1;
+          const color = (inside ? markAt(x, y) : null) ?? PAPER;
 
           r += color[0];
           g += color[1];
           b += color[2];
-          hits += 1;
         }
       }
 
       const offset = (py * size + px) * 4;
-      pixels[offset] = hits ? Math.round(r / hits) : 0;
-      pixels[offset + 1] = hits ? Math.round(g / hits) : 0;
-      pixels[offset + 2] = hits ? Math.round(b / hits) : 0;
-      pixels[offset + 3] = Math.round((hits / total) * 255);
+      pixels[offset] = Math.round(r / total);
+      pixels[offset + 1] = Math.round(g / total);
+      pixels[offset + 2] = Math.round(b / total);
+      pixels[offset + 3] = 255;
     }
   }
 
   return encodePng(size, size, pixels);
-}
-
-function inRoundedSquare(x, y, size, radius) {
-  const cx = Math.min(Math.max(x, radius), size - radius);
-  const cy = Math.min(Math.max(y, radius), size - radius);
-  const dx = x - cx;
-  const dy = y - cy;
-  return dx * dx + dy * dy <= radius * radius;
-}
-
-function mix(from, to, amount) {
-  return [
-    from[0] + (to[0] - from[0]) * amount,
-    from[1] + (to[1] - from[1]) * amount,
-    from[2] + (to[2] - from[2]) * amount,
-  ];
 }
 
 /* --- PNG ----------------------------------------------------------------- */
@@ -258,17 +206,16 @@ function encodePng(width, height, rgba) {
 /* --- Ausgabe ------------------------------------------------------------- */
 
 const targets = [
-  { file: "icon-192.png", size: 192, padding: 0.05, rounded: true },
-  { file: "icon-512.png", size: 512, padding: 0.05, rounded: true },
+  { file: "icon-192.png", size: 192, padding: 0 },
+  { file: "icon-512.png", size: 512, padding: 0 },
   // Maskierbare Icons werden von Android beschnitten - Inhalt weit nach innen.
-  { file: "icon-maskable-512.png", size: 512, padding: 0.19, rounded: false },
-  // iOS rundet das Touch-Icon selbst ab, deshalb randlos.
-  { file: "apple-touch-icon.png", size: 180, padding: 0.08, rounded: false },
+  { file: "icon-maskable-512.png", size: 512, padding: 0.17 },
+  { file: "apple-touch-icon.png", size: 180, padding: 0 },
 ];
 
 mkdirSync(OUT, { recursive: true });
 for (const target of targets) {
-  const png = render(target.size, target);
+  const png = render(target.size, target.padding);
   writeFileSync(join(OUT, target.file), png);
   console.log(`${target.file} – ${(png.length / 1024).toFixed(1)} kB`);
 }

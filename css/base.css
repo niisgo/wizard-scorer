@@ -1,6 +1,4 @@
-/* Reset, Grundtypografie und das Seitengerüst.
-   Die Seite ist als Kontobuch gedacht: eine schmale Spalte, Inhalte durch
-   Haarlinien getrennt, keine schwebenden Flächen. */
+/* Reset, Grundtypografie und das Seitengerüst. */
 
 *,
 *::before,
@@ -22,22 +20,10 @@ body {
   font-size: 16px;
   line-height: 1.5;
   color: var(--ink);
-  background-color: var(--bg);
+  background-color: var(--paper);
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
   overscroll-behavior-y: none;
-}
-
-/* Feine Papierkörnung über der ganzen Fläche. Ein einziges SVG-Rauschen,
-   kein Bild, damit es offline und in jeder Grösse funktioniert. */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: var(--grain);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 button,
@@ -56,25 +42,27 @@ button {
   user-select: none;
 }
 
+/* Anton hat nur einen Schnitt, und der ist bereits sehr fett. 400 steht
+   hier ausdrücklich, damit der Browser keinen Fettschnitt dazurechnet. */
 h1,
 h2,
 h3 {
   font-family: var(--display);
-  font-weight: 600;
-  line-height: 1.15;
+  font-weight: 400;
+  line-height: 1.08;
+  text-transform: uppercase;
+  letter-spacing: 0.005em;
   text-wrap: balance;
 }
 
 :focus-visible {
-  outline: 2px solid var(--brass);
+  outline: var(--bw) solid var(--acc);
   outline-offset: 2px;
 }
 
 /* --- Seitengerüst -------------------------------------------------------- */
 
 .app {
-  position: relative;
-  z-index: 1;
   display: flex;
   flex-direction: column;
   min-height: 100svh;
@@ -83,10 +71,10 @@ h3 {
   padding-inline: max(env(safe-area-inset-left), 0px) max(env(safe-area-inset-right), 0px);
 }
 
-/* Auf breiten Displays steht die Spalte wie eine Buchseite im Raum. */
+/* Auf breiten Displays steht die Spalte als Blatt im Raum. */
 @media (min-width: 640px) {
   .app {
-    border-inline: 1px solid var(--rule);
+    border-inline: 1px solid var(--ink);
   }
 }
 
@@ -96,26 +84,11 @@ h3 {
   z-index: 10;
   padding: calc(env(safe-area-inset-top) + var(--space-4)) var(--space-4)
     var(--space-3);
-  background: var(--bg);
-  border-bottom: 1px solid var(--rule);
-}
-
-/* Doppellinie wie am Kopf einer Buchseite. */
-.topbar::after {
-  content: "";
-  position: absolute;
-  left: var(--space-4);
-  right: var(--space-4);
-  bottom: -4px;
-  height: 1px;
-  background: var(--rule);
+  background: var(--paper);
+  border-bottom: 1px solid var(--ink);
 }
 
 .topbar:empty {
-  display: none;
-}
-
-.topbar:empty::after {
   display: none;
 }
 
@@ -128,7 +101,7 @@ h3 {
 }
 
 .screen--enter {
-  animation: screen-in 0.2s ease-out;
+  animation: screen-in 0.18s ease-out;
 }
 
 @keyframes screen-in {
@@ -143,21 +116,16 @@ h3 {
   z-index: 10;
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  /* Der harte Schatten der Knöpfe braucht Platz nach unten. */
+  gap: var(--space-4);
   padding: var(--space-4) var(--space-4)
     calc(env(safe-area-inset-bottom) + var(--space-4));
-  background: var(--bg);
-  border-top: 1px solid var(--rule);
+  background: var(--paper);
+  border-top: 1px solid var(--ink);
 }
 
 .actionbar:empty {
   display: none;
-}
-
-/* Zeilen, deren Linien bis an den Seitenrand laufen sollen. */
-.bleed {
-  margin-inline: calc(var(--space-4) * -1);
-  padding-inline: var(--space-4);
 }
 
 .visually-hidden {
@@ -173,7 +141,7 @@ h3 {
 .noscript {
   padding: var(--space-5);
   text-align: center;
-  color: var(--ink-dim);
+  color: var(--dim);
 }
 
 @media (prefers-reduced-motion: reduce) {

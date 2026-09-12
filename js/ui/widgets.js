@@ -1,7 +1,7 @@
 /* Wiederverwendbare Bausteine.
 
-   Es gibt bewusst keine "Karte": Abschnitte stehen direkt auf der Seite und
-   werden durch eine Rubrik und Haarlinien getrennt, nicht durch Kästen. */
+   Abschnitte stehen direkt auf der Seite unter einer Rubrik. Getrennt wird
+   mit 1px schwarz; 2px schwarz umrandet, was man anfassen kann. */
 
 import { append, el } from "../dom.js";
 
@@ -52,7 +52,7 @@ export function note(text, tone = "info") {
 }
 
 /**
- * Zeile "Bezeichnung ....... Wert" mit gepunkteter Führungslinie.
+ * Zeile aus Bezeichnung und Wert, getrennt durch eine Haarlinie oben.
  *
  * @param {string} label
  * @param {string} value
@@ -60,17 +60,9 @@ export function note(text, tone = "info") {
 export function entry(label, value) {
   return el("div", { class: "entry" }, [
     el("span", { class: "entry__label", text: label }),
-    el("span", { class: "leader", "aria-hidden": "true" }),
+    el("span", { class: "entry__gap", "aria-hidden": "true" }),
     el("span", { class: "entry__value", text: value }),
   ]);
-}
-
-/** Doppellinie als Trenner. */
-export function doubleRule({ short = false } = {}) {
-  return el("div", {
-    class: `rule-double${short ? " rule-double--short" : ""}`,
-    "aria-hidden": "true",
-  });
 }
 
 /**
@@ -112,7 +104,7 @@ export function numberGrid({ max, value, blocked = null, onPick, labelledBy }) {
 }
 
 /**
- * Fortschritt als ein Strich je Runde - gespielte in Messing.
+ * Fortschritt als ein Balken je Runde - gespielte in Zinnober.
  *
  * @param {number} round aktuelle Runde
  * @param {number} total Runden insgesamt
@@ -136,26 +128,4 @@ export function ticks(round, total) {
     },
     marks,
   );
-}
-
-/**
- * Strichliste wie auf dem Bierdeckel: Fünfergruppen, der fünfte quer.
- *
- * @param {number} count
- */
-export function tally(count) {
-  const groups = [];
-
-  for (let start = 0; start < count; start += 5) {
-    const size = Math.min(5, count - start);
-    const strokes = [];
-
-    // Bei einer vollen Gruppe stehen vier Striche und einer liegt quer.
-    for (let i = 0; i < Math.min(size, 4); i += 1) strokes.push(el("i"));
-    if (size === 5) strokes.push(el("b"));
-
-    groups.push(el("span", { class: "tally__group" }, strokes));
-  }
-
-  return el("div", { class: "tally", "aria-hidden": "true" }, groups);
 }

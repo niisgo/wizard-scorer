@@ -7,7 +7,7 @@ import { standings } from "../rules.js";
 import { go } from "../router.js";
 import { getGame, setGame } from "../store.js";
 import { historyTable, rankList } from "../ui/results.js";
-import { button, doubleRule, section } from "../ui/widgets.js";
+import { button, section } from "../ui/widgets.js";
 
 export function finalScreen() {
   const game = getGame();
@@ -49,9 +49,7 @@ function laurel(game, winners) {
       class: "laurel__label",
       text: names.length === 1 ? "Sieger" : "Gleichstand",
     }),
-    doubleRule({ short: true }),
     el("p", { class: "laurel__name", text: joinNames(names) }),
-    doubleRule({ short: true }),
     el("p", {
       class: "laurel__score",
       text:

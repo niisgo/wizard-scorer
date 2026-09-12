@@ -1,6 +1,6 @@
 /* Rangliste und Rundenverlauf - geteilt von der Punkteübersicht und der
-   Schlussseite. Beides ist als Kontobuchseite gesetzt: Zeilen mit
-   Punktführung, getrennt durch Haarlinien. */
+   Schlussseite. Beide Listen sind gleich gebaut: der Platz im vollen
+   Kästchen, der Name in Versalien, die Punktzahl rechts. */
 
 import { el, signed } from "../dom.js";
 import { currentBids, currentTricks, roundEntry, totals } from "../game.js";
@@ -28,7 +28,7 @@ export function rankList(game, { showRound = false, showDelta = false } = {}) {
         el("span", { class: "ledger__name", text: game.players[index] }),
         roundDetail(bids?.[index], tricks?.[index]),
       ]),
-      el("span", { class: "leader", "aria-hidden": "true" }),
+      el("span", { class: "ledger__gap", "aria-hidden": "true" }),
       delta === null
         ? null
         : el("span", {
