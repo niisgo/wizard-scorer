@@ -15,6 +15,7 @@ const ASSETS = [
   "./index.html",
   "./manifest.webmanifest",
 
+  "./css/fonts.css",
   "./css/tokens.css",
   "./css/base.css",
   "./css/components.css",
@@ -42,6 +43,11 @@ const ASSETS = [
   "./js/screens/bids.js",
   "./js/screens/tricks.js",
   "./js/screens/final.js",
+
+  "./fonts/cinzel-latin.woff2",
+  "./fonts/cinzel-latin-ext.woff2",
+  "./fonts/inter-latin.woff2",
+  "./fonts/inter-latin-ext.woff2",
 
   "./icons/favicon.svg",
   "./icons/icon-192.png",

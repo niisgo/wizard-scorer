@@ -9,7 +9,7 @@ import { join, relative } from "node:path";
    Datei nicht stillschweigend aus dem Offline-Cache fällt. */
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
-const CACHEABLE = /\.(js|css|png|svg|webmanifest|html)$/;
+const CACHEABLE = /\.(js|css|png|svg|webmanifest|html|woff2)$/;
 const SKIP = new Set(["node_modules", "tests", "tools", ".git", ".github", ".claude"]);
 
 function listFiles(dir = ROOT) {
