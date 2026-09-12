@@ -1,10 +1,10 @@
 /* Rangliste und Rundenverlauf - geteilt von der Punkteübersicht und der
-   Schlusstabelle. */
+   Schlussseite. Beides ist als Kontobuchseite gesetzt: Zeilen mit
+   Punktführung, getrennt durch Haarlinien. */
 
 import { el, signed } from "../dom.js";
 import { currentBids, currentTricks, roundEntry, totals } from "../game.js";
 import { standings } from "../rules.js";
-import { card } from "./widgets.js";
 
 /**
  * Spieler nach Punkten sortiert.
@@ -22,34 +22,30 @@ export function rankList(game, { showRound = false, showDelta = false } = {}) {
   const rows = standings(totals(game)).map(({ index, total, rank }) => {
     const delta = showDelta ? (entry?.scores?.[index] ?? null) : null;
 
-    return el("li", { class: `rankrow${rank === 1 ? " is-lead" : ""}` }, [
-      el("span", {
-        class: `rankrow__pos${rank === 1 ? " is-lead" : ""}`,
-        text: String(rank),
-      }),
-      el("span", { class: "rankrow__body" }, [
-        el("span", { class: "rankrow__name", text: game.players[index] }),
+    return el("li", { class: `ledger__row${rank === 1 ? " is-lead" : ""}` }, [
+      el("span", { class: "ledger__rank", text: String(rank) }),
+      el("span", { class: "ledger__who" }, [
+        el("span", { class: "ledger__name", text: game.players[index] }),
         roundDetail(bids?.[index], tricks?.[index]),
       ]),
-      el("span", { class: "rankrow__score" }, [
-        el("span", { class: "rankrow__total", text: String(total) }),
-        delta === null
-          ? null
-          : el("span", {
-              class: `delta ${delta >= 0 ? "delta--good" : "delta--bad"}`,
-              text: signed(delta),
-            }),
-      ]),
+      el("span", { class: "leader", "aria-hidden": "true" }),
+      delta === null
+        ? null
+        : el("span", {
+            class: `ledger__delta ${delta >= 0 ? "is-gain" : "is-loss"}`,
+            text: signed(delta),
+          }),
+      el("span", { class: "ledger__total", text: String(total) }),
     ]);
   });
 
-  return el("ul", { class: "ranklist" }, rows);
+  return el("ol", { class: "ledger" }, rows);
 }
 
 function roundDetail(bid, trick) {
   if (bid === undefined || bid === null) return null;
   return el("span", {
-    class: "rankrow__sub",
+    class: "ledger__sub",
     text:
       trick === undefined || trick === null
         ? `angesagt ${bid}`
@@ -63,7 +59,7 @@ function roundDetail(bid, trick) {
  * @param {object} game
  * @param {boolean} [open] von Anfang an aufgeklappt
  */
-export function historyCard(game, open = false) {
+export function historyTable(game, open = false) {
   const played = game.rounds.filter((round) => round?.scores).length;
   if (played === 0) return null;
 
@@ -78,11 +74,11 @@ export function historyCard(game, open = false) {
 
     body.push(
       el("tr", {}, [
-        el("th", { scope: "row", text: String(index + 1) }),
+        el("th", { scope: "row", text: `Runde ${index + 1}` }),
         ...round.scores.map((score, seat) =>
           el("td", {}, [
             el("span", {
-              class: `history__delta ${score >= 0 ? "is-good" : "is-bad"}`,
+              class: `history__delta ${score >= 0 ? "is-gain" : "is-loss"}`,
               text: signed(score),
             }),
             el("span", { class: "history__running", text: String(running[seat]) }),
@@ -92,10 +88,10 @@ export function historyCard(game, open = false) {
     );
   });
 
-  const details = el("details", { class: "history", open }, [
+  return el("details", { class: "history", open }, [
     el("summary", {
       class: "history__summary",
-      text: `Rundenverlauf (${played} ${played === 1 ? "Runde" : "Runden"})`,
+      text: `Rundenverlauf · ${played} ${played === 1 ? "Runde" : "Runden"}`,
     }),
     el("div", { class: "history__scroll" }, [
       el("table", { class: "history__table" }, [
@@ -103,7 +99,7 @@ export function historyCard(game, open = false) {
           "thead",
           {},
           el("tr", {}, [
-            el("th", { scope: "col", text: "Rd" }),
+            el("th", { scope: "col", text: "" }),
             ...game.players.map((name) => el("th", { scope: "col", text: name })),
           ]),
         ),
@@ -111,6 +107,4 @@ export function historyCard(game, open = false) {
       ]),
     ]),
   ]);
-
-  return card([details], { class: "card--flush" });
 }

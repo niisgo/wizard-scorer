@@ -13,7 +13,7 @@ import {
 } from "../game.js";
 import { refresh } from "../router.js";
 import { getGame, update } from "../store.js";
-import { button, note, numberGrid } from "../ui/widgets.js";
+import { button, note, numberGrid, section } from "../ui/widgets.js";
 
 let session = null;
 
@@ -46,12 +46,17 @@ export function tricksScreen() {
       },
     },
     content: [
-      el(
-        "ul",
-        { class: "tricklist" },
-        game.players.map((name, seat) => row({ name, seat, bid: bids[seat], count })),
+      section(
+        [
+          el(
+            "ul",
+            { class: "tricklist" },
+            game.players.map((name, seat) => row({ name, seat, bid: bids[seat], count })),
+          ),
+          summary({ entered, count, complete, exact }),
+        ],
+        { title: "Geholte Stiche", aside: `${entered} von ${count}` },
       ),
-      summary({ entered, count, complete, exact }),
     ],
     actions: [
       button("Runde werten", {
@@ -116,8 +121,8 @@ function summary({ entered, count, complete, exact }) {
     const missing = count - entered;
     return note(
       missing > 0
-        ? `Bisher ${entered} von ${count} Stichen – es fehlen noch ${missing}.`
-        : `Bisher ${entered} von ${count} Stichen – das sind bereits ${entered - count} zu viel.`,
+        ? `Es fehlen noch ${missing} von ${count} Stichen.`
+        : `Bereits ${entered - count} Stiche zu viel eingetragen.`,
     );
   }
   return note(

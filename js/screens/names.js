@@ -5,7 +5,7 @@ import { el } from "../dom.js";
 import { createGame } from "../game.js";
 import { go } from "../router.js";
 import { recallNames, rememberNames, setGame } from "../store.js";
-import { button, card } from "../ui/widgets.js";
+import { button, section } from "../ui/widgets.js";
 
 export function namesScreen({ count }) {
   const draft = recallNames(count);
@@ -44,7 +44,7 @@ export function namesScreen({ count }) {
     subtitle: `${count} Spieler`,
     back: { label: "Zurück zur Spielerzahl", onClick: () => go("start") },
     content: [
-      card(fields, { title: "Namen" }),
+      section(fields, { title: "Namen", aside: `${count} Spieler` }),
       el("p", {
         class: "hint",
         text: "Leere Felder werden automatisch zu Spieler 1, Spieler 2 und so weiter.",

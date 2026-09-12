@@ -1,4 +1,4 @@
-/* Startbildschirm: Spielerzahl wählen - oder die letzte Partie fortsetzen. */
+/* Titelseite: Spielerzahl wählen - oder die letzte Partie fortsetzen. */
 
 import { el } from "../dom.js";
 import { resume } from "../flow.js";
@@ -7,7 +7,7 @@ import { canInstall, promptInstall } from "../pwa.js";
 import { MAX_PLAYERS, MIN_PLAYERS, totalRounds } from "../rules.js";
 import { go } from "../router.js";
 import { getGame } from "../store.js";
-import { button, card } from "../ui/widgets.js";
+import { button, doubleRule, entry, section } from "../ui/widgets.js";
 
 let chosenCount = 4;
 
@@ -15,7 +15,7 @@ export function startScreen() {
   const running = getGame();
 
   return {
-    content: [hero(), running && resumeCard(running), playerPicker()],
+    content: [wordmark(), running && resumeSection(running), playerPicker()],
     actions: [
       button(running ? "Neues Spiel" : "Weiter", {
         variant: running ? "ghost" : "primary",
@@ -30,28 +30,27 @@ export function startScreen() {
   };
 }
 
-function resumeCard(game) {
-  return card(
-    [
-      el("p", {
-        class: "resume__meta",
-        text: `${game.players.join(", ")} · Runde ${game.round} von ${roundsTotal(game)}`,
-      }),
-      button("Weiterspielen", { onClick: resume }),
-    ],
-    { title: "Angefangene Partie", class: "resume" },
-  );
-}
-
-function hero() {
-  return el("div", { class: "hero" }, [
-    el("p", { class: "hero__eyebrow", text: "Digitaler Punkteblock" }),
-    el("h1", { class: "hero__title", text: "Wizard" }),
+function wordmark() {
+  return el("div", { class: "wordmark" }, [
+    el("p", { class: "wordmark__eyebrow", text: "Punkteblock" }),
+    el("h1", { class: "wordmark__name", text: "Wizard" }),
+    doubleRule({ short: true }),
     el("p", {
-      class: "hero__lead",
-      text: "Kartenanzahl ansagen, Stiche schätzen, Punkte automatisch berechnen. Kein Zettel, kein Kopfrechnen.",
+      class: "wordmark__lead",
+      text: "Die App sagt an, was ausgeteilt wird, passt auf die Ansagen auf und rechnet. Ihr spielt.",
     }),
   ]);
+}
+
+function resumeSection(game) {
+  return section(
+    [
+      entry("Spieler", game.players.join(", ")),
+      entry("Steht bei", `Runde ${game.round} von ${roundsTotal(game)}`),
+      button("Weiterspielen", { onClick: resume }),
+    ],
+    { title: "Angefangene Partie" },
+  );
 }
 
 function playerPicker() {
@@ -69,8 +68,7 @@ function playerPicker() {
       "aria-checked": String(count === chosenCount),
       onClick: (event) => {
         chosenCount = count;
-        const group = event.currentTarget.parentElement;
-        for (const option of group.children) {
+        for (const option of event.currentTarget.parentElement.children) {
           option.setAttribute("aria-checked", String(option === event.currentTarget));
         }
         hint.textContent = hintFor(count);
@@ -78,7 +76,7 @@ function playerPicker() {
     }),
   );
 
-  return card(
+  return section(
     [
       el("div", { class: "picker", role: "radiogroup", "aria-label": "Anzahl der Spieler" }, options),
       hint,
@@ -88,5 +86,5 @@ function playerPicker() {
 }
 
 function hintFor(count) {
-  return `${count} Spieler – das Blatt reicht für ${totalRounds(count)} Runden.`;
+  return `Das Blatt reicht für ${totalRounds(count)} Runden.`;
 }

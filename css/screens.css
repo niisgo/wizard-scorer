@@ -1,364 +1,393 @@
-/* Screen-spezifische Stile. */
+/* Die einzelnen Bildschirme. */
 
-.hint {
-  padding-inline: var(--space-1);
-  font-size: 0.875rem;
-  color: var(--text-faint);
+/* Doppellinie - das Trennzeichen aus dem Buchsatz. */
+.rule-double {
+  height: 4px;
+  border-top: 1px solid var(--brass-dim);
+  border-bottom: 1px solid var(--brass-dim);
 }
 
-/* --- Start --------------------------------------------------------------- */
+.rule-double--short {
+  width: 84px;
+  margin-inline: auto;
+}
 
-.hero {
+/* --- Titelseite ---------------------------------------------------------- */
+
+.wordmark {
   padding-block: var(--space-6) var(--space-2);
   text-align: center;
 }
 
-.hero__eyebrow {
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
+.wordmark__eyebrow {
+  font-family: var(--display);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.34em;
+  text-indent: 0.34em;
   text-transform: uppercase;
-  color: var(--text-faint);
+  color: var(--brass);
 }
 
-.hero__title {
-  margin-block: var(--space-2);
-  font-size: clamp(2.75rem, 14vw, 3.75rem);
-  letter-spacing: -0.03em;
-  background: linear-gradient(135deg, var(--text) 10%, var(--primary) 60%, var(--accent) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+.wordmark__name {
+  margin-block: var(--space-4) var(--space-4);
+  font-family: var(--display);
+  font-size: clamp(2.5rem, 13vw, 3.25rem);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-indent: 0.16em;
+  color: var(--ink);
 }
 
-.hero__lead {
-  max-width: 32ch;
-  margin-inline: auto;
-  color: var(--text-muted);
+.wordmark__lead {
+  max-width: 30ch;
+  margin: var(--space-4) auto 0;
   font-size: 0.9375rem;
+  color: var(--ink-dim);
 }
 
 .picker {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-2);
 }
 
 .picker__option {
-  min-height: 68px;
-  border-radius: var(--radius-md);
-  font-family: var(--font-numeric);
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--text);
-  background: var(--surface-2);
-  box-shadow: inset 0 0 0 1px var(--border);
-  transition:
-    transform 0.1s ease,
-    background 0.15s ease;
-}
-
-.picker__option:active {
-  transform: scale(0.95);
+  min-height: 76px;
+  margin-right: -1px;
+  border: 1px solid var(--rule);
+  font-family: var(--ui);
+  font-size: 1.625rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  background: transparent;
+  transition: background 0.1s linear, color 0.1s linear;
 }
 
 .picker__option[aria-checked="true"] {
-  color: var(--on-primary);
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-strong) 100%);
-  box-shadow: var(--shadow-md);
+  position: relative;
+  z-index: 1;
+  color: var(--on-brass);
+  background: var(--brass);
+  border-color: var(--brass);
+  font-weight: 700;
 }
 
 .picker__hint {
   font-size: 0.875rem;
-  color: var(--text-muted);
+  color: var(--ink-dim);
 }
 
 .resume__meta {
   font-size: 0.9375rem;
-  color: var(--text-muted);
+  color: var(--ink-dim);
+}
+
+/* --- Namen --------------------------------------------------------------- */
+
+.namerow {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+
+.namerow__seat {
+  flex: none;
+  width: 1.4em;
+  font-family: var(--display);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--brass);
 }
 
 /* --- Austeil-Ansage ------------------------------------------------------ */
 
 .deal {
-  position: relative;
-  display: grid;
-  place-items: center;
-  gap: var(--space-1);
-  padding-block: var(--space-6) var(--space-5);
+  padding-block: var(--space-4) var(--space-2);
   text-align: center;
 }
 
-.deal::before {
-  content: "";
-  position: absolute;
-  inset: -10% 10% 10%;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    color-mix(in srgb, var(--primary) 30%, transparent) 0%,
-    transparent 70%
-  );
-  filter: blur(24px);
-  pointer-events: none;
-}
-
-.deal > * {
-  position: relative;
-}
-
-.deal__label {
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--text-faint);
-}
-
 .deal__count {
-  font-family: var(--font-numeric);
-  font-size: clamp(5.5rem, 34vw, 8.5rem);
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: -0.05em;
+  font-family: var(--ui);
+  font-size: clamp(5rem, 30vw, 7rem);
+  font-weight: 600;
+  line-height: 0.88;
+  letter-spacing: -0.04em;
   font-variant-numeric: tabular-nums;
-  background: linear-gradient(160deg, var(--text) 0%, var(--primary) 70%, var(--accent) 110%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--ink);
 }
 
 .deal__unit {
-  font-size: 1rem;
+  margin-top: var(--space-4);
+  font-family: var(--display);
+  font-size: 0.75rem;
   font-weight: 600;
-  color: var(--text-muted);
+  letter-spacing: 0.24em;
+  text-indent: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+.deal__tally {
+  margin-top: var(--space-5);
 }
 
 /* --- Ansagen ------------------------------------------------------------- */
 
-.bidstrip {
+/* Die Tafel oben: alle Spieler der Runde in Ansage-Reihenfolge. */
+.slate {
   display: flex;
-  gap: var(--space-2);
-  margin: 0;
-  padding: 0 0 var(--space-1);
-  list-style: none;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
+  border-block: 1px solid var(--rule);
 }
 
-.bidstrip::-webkit-scrollbar {
-  display: none;
-}
-
-.bidstrip__item {
+.slate__seat {
   position: relative;
-  flex: none;
-  display: grid;
-  gap: 2px;
-  min-width: 76px;
-  max-width: 108px;
-  padding: var(--space-2) var(--space-3);
-  border-radius: var(--radius-md);
+  flex: 1;
+  min-width: 0;
+  padding: var(--space-2) var(--space-1);
   text-align: center;
-  background: var(--surface);
-  box-shadow: inset 0 0 0 1px var(--border-soft);
 }
 
-.bidstrip__item.is-current {
-  background: var(--primary-soft);
-  box-shadow: inset 0 0 0 2px var(--primary);
+.slate__seat + .slate__seat {
+  border-left: 1px solid var(--rule);
 }
 
-.bidstrip__name {
-  font-size: 0.75rem;
-  color: var(--text-muted);
+.slate__seat.is-current {
+  background: var(--raised);
+}
+
+.slate__name {
+  display: block;
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.bidstrip__value {
-  font-family: var(--font-numeric);
+.slate__bid {
+  display: block;
+  margin-top: 2px;
   font-size: 1.125rem;
-  font-weight: 700;
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
-  color: var(--text-faint);
+  color: var(--ink-faint);
 }
 
-.bidstrip__item.is-done .bidstrip__value,
-.bidstrip__item.is-current .bidstrip__value {
-  color: var(--text);
+.slate__seat.is-done .slate__bid {
+  color: var(--ink);
 }
 
-/* Liegt über der ganzen Kachel: antippen korrigiert die Ansage. */
-.bidstrip__edit {
+.slate__seat.is-current .slate__name,
+.slate__seat.is-current .slate__bid {
+  color: var(--brass);
+}
+
+/* Liegt über der ganzen Spalte: antippen korrigiert die Ansage. */
+.slate__edit {
   position: absolute;
   inset: 0;
-  border-radius: inherit;
 }
 
 .turn {
-  padding-block: var(--space-5) var(--space-3);
+  padding-block: var(--space-4) var(--space-1);
   text-align: center;
 }
 
 .turn__label {
-  font-size: 0.875rem;
-  color: var(--text-muted);
+  font-family: var(--display);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-indent: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
 }
 
 .turn__name {
-  font-size: clamp(1.75rem, 9vw, 2.5rem);
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  margin-top: var(--space-2);
+  font-family: var(--display);
+  font-size: clamp(1.75rem, 9vw, 2.375rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
   overflow-wrap: anywhere;
 }
 
-/* --- Punkteübersicht ----------------------------------------------------- */
+/* --- Stiche eintragen ---------------------------------------------------- */
 
-.ranklist {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
+.tricklist {
   margin: 0;
   padding: 0;
   list-style: none;
+  border-top: 1px solid var(--rule);
 }
 
-.rankrow {
+.trickrow {
+  border-bottom: 1px solid var(--rule);
+}
+
+.trickrow.is-open {
+  background: var(--panel);
+}
+
+.trickrow__head {
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  min-height: 62px;
-  padding: var(--space-2) var(--space-4);
-  border-radius: var(--radius-lg);
-  background: var(--surface);
-  box-shadow: inset 0 0 0 1px var(--border-soft);
+  width: 100%;
+  min-height: 58px;
+  padding: var(--space-2) 0;
+  text-align: left;
 }
 
-.rankrow__pos {
-  display: grid;
-  place-items: center;
-  width: 26px;
-  height: 26px;
-  flex: none;
-  border-radius: var(--radius-full);
-  font-size: 0.8125rem;
-  font-weight: 700;
-  color: var(--text-muted);
-  background: var(--surface-2);
-}
-
-.rankrow__pos.is-lead {
-  color: #2b1c00;
-  background: linear-gradient(135deg, var(--accent) 0%, #f59e0b 100%);
-}
-
-.rankrow__body {
-  display: grid;
+.trickrow__name {
   flex: 1;
   min-width: 0;
-}
-
-.rankrow__name {
+  font-family: var(--display);
   font-size: 1.0625rem;
-  font-weight: 650;
+  font-weight: 600;
+  letter-spacing: 0.02em;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.rankrow__sub {
-  font-size: 0.8125rem;
-  color: var(--text-muted);
+.trickrow__bid {
+  flex: none;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
 }
 
-.rankrow__score {
+.trickrow__value {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 40px;
+  flex: none;
+  border: 1px solid var(--rule-strong);
+  font-size: 1.25rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.trickrow__value.is-empty {
+  color: var(--ink-faint);
+}
+
+.trickrow__value.is-hit {
+  color: var(--on-brass);
+  background: var(--brass);
+  border-color: var(--brass);
+}
+
+.trickrow .numgrid {
+  padding-bottom: var(--space-3);
+}
+
+/* --- Punkteübersicht ----------------------------------------------------- */
+
+.ledger {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--rule);
+}
+
+.ledger__row {
   display: flex;
   align-items: baseline;
   gap: var(--space-2);
+  min-height: 58px;
+  padding-block: var(--space-3);
+  border-bottom: 1px solid var(--rule);
+}
+
+.ledger__rank {
   flex: none;
-}
-
-.rankrow__total {
-  font-family: var(--font-numeric);
-  font-size: 1.375rem;
-  font-weight: 750;
-  font-variant-numeric: tabular-nums;
-}
-
-.delta {
-  padding: 1px var(--space-2);
-  border-radius: var(--radius-full);
-  font-size: 0.75rem;
+  width: 1.5em;
+  font-family: var(--display);
+  font-size: 0.8125rem;
   font-weight: 700;
+  color: var(--ink-faint);
+}
+
+.ledger__row.is-lead .ledger__rank {
+  color: var(--brass);
+}
+
+.ledger__who {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+.ledger__name {
+  display: block;
+  font-family: var(--display);
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ledger__sub {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.ledger__delta {
+  flex: none;
+  font-size: 0.8125rem;
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
 
-.delta--good {
-  color: var(--good);
-  background: var(--good-soft);
+.ledger__total {
+  flex: none;
+  min-width: 2.6em;
+  text-align: right;
+  font-size: 1.5rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
 }
 
-.delta--bad {
-  color: var(--bad);
-  background: var(--bad-soft);
+.is-gain {
+  color: var(--gain);
 }
 
-.rankrow.is-lead {
-  background: linear-gradient(
-    135deg,
-    color-mix(in srgb, var(--accent) 12%, var(--surface)) 0%,
-    var(--surface) 60%
-  );
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent);
-}
-
-/* --- Endstand ------------------------------------------------------------ */
-
-.trophy {
-  display: grid;
-  place-items: center;
-  gap: var(--space-1);
-  padding-block: var(--space-5) var(--space-4);
-  text-align: center;
-}
-
-.trophy__crown {
-  font-size: 2.5rem;
-  line-height: 1;
-  color: var(--accent);
-  filter: drop-shadow(0 6px 16px color-mix(in srgb, var(--accent) 45%, transparent));
-}
-
-.trophy__name {
-  font-size: clamp(1.75rem, 8vw, 2.25rem);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  overflow-wrap: anywhere;
-  background: linear-gradient(135deg, var(--accent) 0%, var(--text) 90%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.trophy__line {
-  color: var(--text-muted);
+.is-loss {
+  color: var(--loss);
 }
 
 /* --- Rundenverlauf ------------------------------------------------------- */
 
-.card--flush {
-  padding: 0;
-  gap: 0;
+.history {
+  border-top: 1px solid var(--rule);
 }
 
 .history__summary {
-  padding: var(--space-4);
-  font-size: 0.9375rem;
-  font-weight: 650;
-  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: var(--space-3);
+  font-family: var(--display);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--brass);
   cursor: pointer;
   list-style: none;
 }
@@ -368,23 +397,27 @@
 }
 
 .history__summary::after {
-  content: " ▾";
-  color: var(--text-faint);
+  content: "+";
+  font-family: var(--ui);
+  font-size: 1rem;
+  letter-spacing: 0;
+  color: var(--ink-faint);
 }
 
 .history[open] .history__summary::after {
-  content: " ▴";
+  content: "−";
 }
 
 .history__scroll {
   overflow-x: auto;
-  padding: 0 var(--space-4) var(--space-4);
+  padding-bottom: var(--space-4);
 }
 
 .history__table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
 }
 
 .history__table th,
@@ -392,186 +425,107 @@
   padding: var(--space-2) var(--space-2);
   text-align: right;
   white-space: nowrap;
+  border-bottom: 1px solid var(--rule);
 }
 
 .history__table thead th {
-  position: sticky;
-  top: 0;
-  font-size: 0.75rem;
-  font-weight: 650;
-  color: var(--text-muted);
-  border-bottom: 1px solid var(--border);
+  font-family: var(--display);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  border-bottom-color: var(--rule-strong);
 }
 
 .history__table tbody th {
+  padding-left: 0;
   text-align: left;
-  font-weight: 650;
-  color: var(--text-faint);
-}
-
-.history__table tbody tr + tr td,
-.history__table tbody tr + tr th {
-  border-top: 1px solid var(--border-soft);
+  font-family: var(--ui);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--ink-faint);
 }
 
 .history__delta {
-  font-variant-numeric: tabular-nums;
-  font-weight: 650;
-}
-
-.history__delta.is-good {
-  color: var(--good);
-}
-
-.history__delta.is-bad {
-  color: var(--bad);
+  font-weight: 600;
 }
 
 .history__running {
   display: block;
+  font-size: 0.625rem;
+  color: var(--ink-faint);
+}
+
+/* --- Schlussseite -------------------------------------------------------- */
+
+.laurel {
+  padding-block: var(--space-5) var(--space-4);
+  text-align: center;
+}
+
+.laurel__label {
+  font-family: var(--display);
   font-size: 0.6875rem;
-  font-variant-numeric: tabular-nums;
-  color: var(--text-faint);
-}
-
-/* --- Stiche eintragen ---------------------------------------------------- */
-
-.tricklist {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.trickrow {
-  border-radius: var(--radius-lg);
-  background: var(--surface);
-  box-shadow: inset 0 0 0 1px var(--border-soft);
-  overflow: hidden;
-}
-
-.trickrow.is-open {
-  box-shadow: inset 0 0 0 2px var(--primary);
-}
-
-.trickrow__head {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  width: 100%;
-  min-height: 60px;
-  padding: var(--space-3) var(--space-4);
-  text-align: left;
-}
-
-.trickrow__name {
-  flex: 1;
-  min-width: 0;
-  font-size: 1.0625rem;
-  font-weight: 650;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.trickrow__bid {
-  flex: none;
-  padding: 2px var(--space-2);
-  border-radius: var(--radius-full);
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  background: var(--surface-2);
-}
-
-.trickrow__value {
-  display: grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  flex: none;
-  border-radius: var(--radius-md);
-  font-family: var(--font-numeric);
-  font-size: 1.25rem;
   font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  background: var(--surface-2);
+  letter-spacing: 0.34em;
+  text-indent: 0.34em;
+  text-transform: uppercase;
+  color: var(--brass);
 }
 
-.trickrow__value.is-empty {
-  color: var(--text-faint);
-}
-
-.trickrow__value.is-hit {
-  color: var(--good);
-  background: var(--good-soft);
-}
-
-.trickrow .numgrid {
-  padding: 0 var(--space-3) var(--space-3);
-}
-
-/* --- Namen --------------------------------------------------------------- */
-
-.namerow {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-}
-
-.namerow__seat {
-  display: grid;
-  place-items: center;
-  width: 30px;
-  height: 30px;
-  flex: none;
-  border-radius: var(--radius-full);
-  font-size: 0.8125rem;
+.laurel__name {
+  margin-block: var(--space-4);
+  font-family: var(--display);
+  font-size: clamp(2rem, 10vw, 2.75rem);
   font-weight: 700;
-  color: var(--text-muted);
-  background: var(--surface-2);
-  box-shadow: inset 0 0 0 1px var(--border);
+  letter-spacing: 0.06em;
+  overflow-wrap: anywhere;
+}
+
+.laurel__score {
+  margin-top: var(--space-4);
+  font-size: 0.9375rem;
+  color: var(--ink-dim);
 }
 
 /* --- Handy im Querformat ------------------------------------------------- */
 
-/* Steht bewusst am Ende: die Regeln müssen die Grundgrössen oben überschreiben. */
+/* Steht am Ende: überschreibt bewusst die Grundgrössen von weiter oben. */
 @media (orientation: landscape) and (max-height: 560px) {
-  .hero {
-    padding-block: var(--space-3) 0;
+  .wordmark {
+    padding-block: var(--space-4) 0;
   }
 
-  .hero__lead {
+  .wordmark__lead {
     display: none;
   }
 
   .deal {
-    padding-block: var(--space-2);
+    padding-block: var(--space-2) 0;
   }
 
   .deal__count {
     font-size: clamp(3rem, 22vh, 4.5rem);
   }
 
-  .deal::before {
-    display: none;
+  .deal__tally {
+    margin-top: var(--space-3);
+  }
+
+  .tally__group i {
+    height: 20px;
   }
 
   .turn {
-    padding-block: var(--space-2) var(--space-1);
+    padding-block: var(--space-2) 0;
   }
 
   .turn__name {
     font-size: clamp(1.5rem, 7vh, 2rem);
   }
 
-  .trophy {
+  .laurel {
     padding-block: var(--space-3) var(--space-2);
-  }
-
-  .trophy__crown {
-    font-size: 1.75rem;
   }
 }

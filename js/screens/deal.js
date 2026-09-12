@@ -6,28 +6,29 @@ import { resume } from "../flow.js";
 import { bidOrder, cards, confirmDeal, dealer, roundsTotal } from "../game.js";
 import { getGame, update } from "../store.js";
 import { menuButton } from "../ui/menu.js";
-import { button, card, note, roundProgress, statRow } from "../ui/widgets.js";
+import { button, entry, note, section, tally, ticks } from "../ui/widgets.js";
 
 export function dealScreen() {
   const game = getGame();
+  const rounds = roundsTotal(game);
   const count = cards(game);
   const dealerName = game.players[dealer(game)];
   const firstBidder = game.players[bidOrder(game)[0]];
 
   return {
     title: `Runde ${game.round}`,
-    subtitle: `von ${roundsTotal(game)} · ${game.players.length} Spieler`,
+    subtitle: `von ${rounds} · ${game.players.length} Spieler`,
     aside: menuButton(),
     content: [
-      roundProgress(game.round, roundsTotal(game)),
-      announcement(count),
-      card([
-        statRow("Gibt", dealerName),
-        statRow("Sagt zuerst an", firstBidder),
-      ]),
-      note(
-        `${dealerName} sagt zuletzt an und darf die Runde nicht aufgehen lassen.`,
-      ),
+      ticks(game.round, rounds),
+      section([announcement(count)], {
+        title: "Jetzt austeilen",
+        aside: `Runde ${game.round}/${rounds}`,
+      }),
+      section([entry("Gibt", dealerName), entry("Sagt zuerst an", firstBidder)], {
+        title: "Am Zug",
+      }),
+      note(`${dealerName} sagt zuletzt an und darf die Runde nicht aufgehen lassen.`),
     ],
     actions: [
       button("Ausgeteilt", {
@@ -42,16 +43,12 @@ export function dealScreen() {
 
 function announcement(count) {
   return el("div", { class: "deal" }, [
-    el("p", { class: "deal__label", text: "Jetzt austeilen" }),
-    el("p", {
-      class: "deal__count",
-      text: String(count),
-      "aria-hidden": "true",
-    }),
+    el("p", { class: "deal__count", text: String(count), "aria-hidden": "true" }),
     el("p", {
       class: "deal__unit",
       text: count === 1 ? "Karte pro Spieler" : "Karten pro Spieler",
     }),
+    el("div", { class: "deal__tally" }, tally(count)),
     // Für Screenreader die ganze Aussage in einem Stück.
     el("p", {
       class: "visually-hidden",

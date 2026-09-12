@@ -1,4 +1,6 @@
-/* Reset, Grundtypografie und das App-Layout (Topbar / Screen / Actionbar). */
+/* Reset, Grundtypografie und das Seitengerüst.
+   Die Seite ist als Kontobuch gedacht: eine schmale Spalte, Inhalte durch
+   Haarlinien getrennt, keine schwebenden Flächen. */
 
 *,
 *::before,
@@ -16,20 +18,26 @@ body {
 }
 
 body {
-  font-family: var(--font);
+  font-family: var(--ui);
   font-size: 16px;
   line-height: 1.5;
-  color: var(--text);
+  color: var(--ink);
   background-color: var(--bg);
-  background-image: radial-gradient(
-    120% 80% at 50% -10%,
-    var(--bg-glow) 0%,
-    transparent 60%
-  );
-  background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
   overscroll-behavior-y: none;
+}
+
+/* Feine Papierkörnung über der ganzen Fläche. Ein einziges SVG-Rauschen,
+   kein Bild, damit es offline und in jeder Grösse funktioniert. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: var(--grain);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 button,
@@ -43,7 +51,6 @@ button {
   cursor: pointer;
   border: none;
   background: none;
-  /* Kein 300ms-Verzug und kein Doppeltipp-Zoom auf Touchgeräten. */
   touch-action: manipulation;
   -webkit-user-select: none;
   user-select: none;
@@ -52,36 +59,34 @@ button {
 h1,
 h2,
 h3 {
-  line-height: 1.2;
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  font-family: var(--display);
+  font-weight: 600;
+  line-height: 1.15;
   text-wrap: balance;
 }
 
 :focus-visible {
-  outline: 2px solid var(--primary);
+  outline: 2px solid var(--brass);
   outline-offset: 2px;
-  border-radius: var(--radius-sm);
 }
 
-/* --- Layout ------------------------------------------------------------- */
+/* --- Seitengerüst -------------------------------------------------------- */
 
 .app {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   min-height: 100svh;
   max-width: var(--app-max);
   margin-inline: auto;
-  /* Im Querformat schneidet die Notch sonst in den Inhalt. */
   padding-inline: max(env(safe-area-inset-left), 0px) max(env(safe-area-inset-right), 0px);
 }
 
-/* Auf grossen Displays liest sich die Spalte besser mit Kante. */
-@media (min-width: 700px) {
+/* Auf breiten Displays steht die Spalte wie eine Buchseite im Raum. */
+@media (min-width: 640px) {
   .app {
-    box-shadow:
-      inset 1px 0 0 var(--border-soft),
-      inset -1px 0 0 var(--border-soft);
+    border-inline: 1px solid var(--rule);
   }
 }
 
@@ -89,35 +94,48 @@ h3 {
   position: sticky;
   top: 0;
   z-index: 10;
-  padding: calc(env(safe-area-inset-top) + var(--space-3)) var(--space-4)
+  padding: calc(env(safe-area-inset-top) + var(--space-4)) var(--space-4)
     var(--space-3);
-  background: color-mix(in srgb, var(--bg) 86%, transparent);
-  backdrop-filter: blur(12px);
+  background: var(--bg);
+  border-bottom: 1px solid var(--rule);
+}
+
+/* Doppellinie wie am Kopf einer Buchseite. */
+.topbar::after {
+  content: "";
+  position: absolute;
+  left: var(--space-4);
+  right: var(--space-4);
+  bottom: -4px;
+  height: 1px;
+  background: var(--rule);
 }
 
 .topbar:empty {
   display: none;
 }
 
+.topbar:empty::after {
+  display: none;
+}
+
 .screen {
   flex: 1;
-  padding: var(--space-4) var(--space-4) var(--space-6);
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-5);
+  padding: var(--space-5) var(--space-4) var(--space-6);
 }
 
 .screen--enter {
-  animation: screen-in 0.22s ease-out;
+  animation: screen-in 0.2s ease-out;
 }
 
 @keyframes screen-in {
   from {
     opacity: 0;
-    transform: translateY(8px);
   }
 }
-
 
 .actionbar {
   position: sticky;
@@ -125,18 +143,21 @@ h3 {
   z-index: 10;
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
-  padding: var(--space-3) var(--space-4)
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-4)
     calc(env(safe-area-inset-bottom) + var(--space-4));
-  background: linear-gradient(
-    to top,
-    var(--bg) 55%,
-    color-mix(in srgb, var(--bg) 70%, transparent)
-  );
+  background: var(--bg);
+  border-top: 1px solid var(--rule);
 }
 
 .actionbar:empty {
   display: none;
+}
+
+/* Zeilen, deren Linien bis an den Seitenrand laufen sollen. */
+.bleed {
+  margin-inline: calc(var(--space-4) * -1);
+  padding-inline: var(--space-4);
 }
 
 .visually-hidden {
@@ -152,7 +173,7 @@ h3 {
 .noscript {
   padding: var(--space-5);
   text-align: center;
-  color: var(--text-muted);
+  color: var(--ink-dim);
 }
 
 @media (prefers-reduced-motion: reduce) {

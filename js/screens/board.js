@@ -15,8 +15,8 @@ import {
 } from "../game.js";
 import { getGame, update } from "../store.js";
 import { menuButton } from "../ui/menu.js";
-import { historyCard, rankList } from "../ui/results.js";
-import { button, roundProgress } from "../ui/widgets.js";
+import { historyTable, rankList } from "../ui/results.js";
+import { button, section, ticks } from "../ui/widgets.js";
 
 export function boardScreen() {
   const game = getGame();
@@ -30,9 +30,12 @@ export function boardScreen() {
     subtitle: `${count} ${count === 1 ? "Karte" : "Karten"} · ${status(bids, scored)}`,
     aside: menuButton(),
     content: [
-      roundProgress(game.round, rounds),
-      rankList(game, { showRound: true, showDelta: scored }),
-      historyCard(game),
+      ticks(game.round, rounds),
+      section([rankList(game, { showRound: true, showDelta: scored })], {
+        title: "Punktestand",
+        aside: `nach ${scored ? game.round : game.round - 1} von ${rounds}`,
+      }),
+      historyTable(game),
     ],
     actions: mainActions(game, { bids, scored }),
   };

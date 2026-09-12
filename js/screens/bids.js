@@ -8,7 +8,7 @@ import { bidOrder, cards, currentBids, submitBids, toBoard } from "../game.js";
 import { forbiddenBid } from "../rules.js";
 import { refresh } from "../router.js";
 import { getGame, update } from "../store.js";
-import { note, numberGrid } from "../ui/widgets.js";
+import { note, numberGrid, section } from "../ui/widgets.js";
 
 /** Zwischenstand der laufenden Eingabe, damit ein Re-Render nichts verliert. */
 let session = null;
@@ -38,18 +38,23 @@ export function bidsScreen() {
     subtitle: `Runde ${game.round} · ${count} ${count === 1 ? "Karte" : "Karten"}`,
     back: { label: "Einen Schritt zurück", onClick: stepBack },
     content: [
-      orderStrip(game, order, session.step),
+      slate(game, order, session.step),
       el("div", { class: "turn" }, [
         el("p", { class: "turn__label", text: "Wie viele Stiche holt" }),
         el("p", { class: "turn__name", text: game.players[seat] }),
       ]),
-      numberGrid({
-        max: count,
-        value: session.values[seat],
-        blocked,
-        onPick: (value) => pick(value, seat, isLast),
-      }),
-      hint({ count, alreadyAnnounced, blocked, isLast }),
+      section(
+        [
+          numberGrid({
+            max: count,
+            value: session.values[seat],
+            blocked,
+            onPick: (value) => pick(value, seat, isLast),
+          }),
+          hint({ count, alreadyAnnounced, blocked, isLast }),
+        ],
+        { title: "Ansage", aside: `${alreadyAnnounced} von ${count} angesagt` },
+      ),
     ],
   };
 }
@@ -80,29 +85,29 @@ function stepBack() {
   resume();
 }
 
-/** Wer ist schon durch, wer ist dran, wer kommt noch? */
-function orderStrip(game, order, step) {
+/** Die Tafel: wer ist durch, wer ist dran, wer kommt noch. */
+function slate(game, order, step) {
   return el(
-    "ol",
-    { class: "bidstrip" },
+    "div",
+    { class: "slate" },
     order.map((seat, position) => {
       const done = position < step;
       const current = position === step;
 
       return el(
-        "li",
+        "div",
         {
-          class: `bidstrip__item${current ? " is-current" : ""}${done ? " is-done" : ""}`,
+          class: `slate__seat${current ? " is-current" : ""}${done ? " is-done" : ""}`,
         },
         [
-          el("span", { class: "bidstrip__name", text: game.players[seat] }),
+          el("span", { class: "slate__name", text: game.players[seat] }),
           el("span", {
-            class: "bidstrip__value",
+            class: "slate__bid",
             text: done ? String(session.values[seat]) : current ? "?" : "·",
           }),
           done
             ? el("button", {
-                class: "bidstrip__edit",
+                class: "slate__edit",
                 type: "button",
                 "aria-label": `Ansage von ${game.players[seat]} korrigieren`,
                 onClick: () => {
@@ -120,14 +125,14 @@ function orderStrip(game, order, step) {
 function hint({ count, alreadyAnnounced, blocked, isLast }) {
   if (isLast && blocked !== null) {
     return note(
-      `${blocked} ist gesperrt: Die Ansagen dürfen nicht aufgehen. Bisher sind ${alreadyAnnounced} von ${count} Stichen angesagt.`,
+      `Die ${blocked} ist gesperrt – damit würde die Runde aufgehen.`,
       "error",
     );
   }
   if (isLast) {
     return note(
-      `Bisher sind ${alreadyAnnounced} von ${count} Stichen angesagt – es ist bereits überreizt, also ist nichts gesperrt.`,
+      `Bereits ${alreadyAnnounced} von ${count} Stichen angesagt – überreizt, also ist nichts gesperrt.`,
     );
   }
-  return note(`Bisher angesagt: ${alreadyAnnounced} von ${count} Stichen.`);
+  return note(`Noch ${count - alreadyAnnounced} von ${count} Stichen unangesagt.`);
 }

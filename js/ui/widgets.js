@@ -1,4 +1,7 @@
-/* Wiederverwendbare Bausteine: Buttons, Karten, Zahlenfelder. */
+/* Wiederverwendbare Bausteine.
+
+   Es gibt bewusst keine "Karte": Abschnitte stehen direkt auf der Seite und
+   werden durch eine Rubrik und Haarlinien getrennt, nicht durch Kästen. */
 
 import { append, el } from "../dom.js";
 
@@ -19,22 +22,59 @@ export function button(label, { variant = "primary", onClick, disabled = false, 
   });
 }
 
-/** Karte mit optionaler Überschrift. */
-export function card(children, { title, class: extra = "" } = {}) {
-  return el("section", { class: `card ${extra}`.trim() }, [
-    title ? el("h2", { class: "card__title", text: title }) : null,
+/**
+ * Abschnitt mit gesetzter Überschrift.
+ *
+ * @param {Array<Node|string|null|false>|Node} children
+ * @param {object} [options]
+ * @param {string} [options.title] Rubrik in Kapitälchen
+ * @param {string} [options.aside] kleine Zusatzangabe rechts in der Rubrik
+ */
+export function section(children, { title, aside } = {}) {
+  return el("section", { class: "section" }, [
+    title
+      ? el("h2", { class: "rubric" }, [
+          el("span", { text: title }),
+          aside ? el("span", { class: "rubric__aside", text: aside }) : null,
+        ])
+      : null,
     ...(Array.isArray(children) ? children : [children]),
   ]);
 }
 
-/** Hinweiszeile, z.B. für Regelverstöße. */
+/** Hinweiszeile mit senkrechter Linie am Rand. */
 export function note(text, tone = "info") {
-  return el("p", { class: `note note--${tone}`, text, role: tone === "error" ? "alert" : null });
+  return el("p", {
+    class: `note note--${tone}`,
+    text,
+    role: tone === "error" ? "alert" : null,
+  });
 }
 
 /**
- * Raster aus Zahl-Knöpfen von 0 bis max - die Haupteingabe der App.
- * Groß genug für den Daumen, ohne Tastatur.
+ * Zeile "Bezeichnung ....... Wert" mit gepunkteter Führungslinie.
+ *
+ * @param {string} label
+ * @param {string} value
+ */
+export function entry(label, value) {
+  return el("div", { class: "entry" }, [
+    el("span", { class: "entry__label", text: label }),
+    el("span", { class: "leader", "aria-hidden": "true" }),
+    el("span", { class: "entry__value", text: value }),
+  ]);
+}
+
+/** Doppellinie als Trenner. */
+export function doubleRule({ short = false } = {}) {
+  return el("div", {
+    class: `rule-double${short ? " rule-double--short" : ""}`,
+    "aria-hidden": "true",
+  });
+}
+
+/**
+ * Zahlenraster von 0 bis max - die Haupteingabe der App.
  *
  * @param {object} options
  * @param {number} options.max größte wählbare Zahl
@@ -72,33 +112,50 @@ export function numberGrid({ max, value, blocked = null, onPick, labelledBy }) {
 }
 
 /**
- * Schmaler Fortschrittsbalken über die Partie.
+ * Fortschritt als ein Strich je Runde - gespielte in Messing.
  *
  * @param {number} round aktuelle Runde
  * @param {number} total Runden insgesamt
  */
-export function roundProgress(round, total) {
+export function ticks(round, total) {
+  const marks = [];
+  for (let index = 1; index <= total; index += 1) {
+    const state = index < round ? " is-played" : index === round ? " is-current" : "";
+    marks.push(el("span", { class: `ticks__mark${state}`, "aria-hidden": "true" }));
+  }
+
   return el(
     "div",
     {
-      class: "progress",
+      class: "ticks",
       role: "progressbar",
       "aria-valuemin": "1",
       "aria-valuemax": String(total),
       "aria-valuenow": String(round),
       "aria-label": `Runde ${round} von ${total}`,
     },
-    el("span", {
-      class: "progress__bar",
-      style: `width: ${(round / total) * 100}%`,
-    }),
+    marks,
   );
 }
 
-/** Zeile "Spieler - Wert" für Übersichten. */
-export function statRow(label, value, { tone = "" } = {}) {
-  return el("div", { class: "statrow" }, [
-    el("span", { class: "statrow__label", text: label }),
-    el("span", { class: `statrow__value ${tone}`.trim(), text: value }),
-  ]);
+/**
+ * Strichliste wie auf dem Bierdeckel: Fünfergruppen, der fünfte quer.
+ *
+ * @param {number} count
+ */
+export function tally(count) {
+  const groups = [];
+
+  for (let start = 0; start < count; start += 5) {
+    const size = Math.min(5, count - start);
+    const strokes = [];
+
+    // Bei einer vollen Gruppe stehen vier Striche und einer liegt quer.
+    for (let i = 0; i < Math.min(size, 4); i += 1) strokes.push(el("i"));
+    if (size === 5) strokes.push(el("b"));
+
+    groups.push(el("span", { class: "tally__group" }, strokes));
+  }
+
+  return el("div", { class: "tally", "aria-hidden": "true" }, groups);
 }

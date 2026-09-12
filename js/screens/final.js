@@ -1,4 +1,4 @@
-/* Schlusstabelle nach der letzten Runde. */
+/* Schlussseite nach der letzten Runde. */
 
 import { el } from "../dom.js";
 import { resume } from "../flow.js";
@@ -6,8 +6,8 @@ import { createGame, roundsTotal, totals } from "../game.js";
 import { standings } from "../rules.js";
 import { go } from "../router.js";
 import { getGame, setGame } from "../store.js";
-import { historyCard, rankList } from "../ui/results.js";
-import { button } from "../ui/widgets.js";
+import { historyTable, rankList } from "../ui/results.js";
+import { button, doubleRule, section } from "../ui/widgets.js";
 
 export function finalScreen() {
   const game = getGame();
@@ -18,12 +18,12 @@ export function finalScreen() {
     title: "Endstand",
     subtitle: `${roundsTotal(game)} Runden · ${game.players.length} Spieler`,
     content: [
-      trophy(game, winners),
-      rankList(game),
-      historyCard(game),
+      laurel(game, winners),
+      section([rankList(game)], { title: "Abrechnung" }),
+      historyTable(game),
     ],
     actions: [
-      button("Nochmal mit denselben Spielern", {
+      button("Nochmal, gleiche Runde", {
         onClick: () => {
           setGame(createGame(game.players));
           resume();
@@ -40,15 +40,20 @@ export function finalScreen() {
   };
 }
 
-function trophy(game, winners) {
+function laurel(game, winners) {
   const names = winners.map((row) => game.players[row.index]);
   const points = winners[0].total;
 
-  return el("div", { class: "trophy" }, [
-    el("span", { class: "trophy__crown", "aria-hidden": "true", text: "♛" }),
-    el("p", { class: "trophy__name", text: joinNames(names) }),
+  return el("div", { class: "laurel" }, [
     el("p", {
-      class: "trophy__line",
+      class: "laurel__label",
+      text: names.length === 1 ? "Sieger" : "Gleichstand",
+    }),
+    doubleRule({ short: true }),
+    el("p", { class: "laurel__name", text: joinNames(names) }),
+    doubleRule({ short: true }),
+    el("p", {
+      class: "laurel__score",
       text:
         names.length === 1
           ? `gewinnt mit ${points} Punkten`

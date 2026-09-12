@@ -38,6 +38,29 @@ Haben die Mitspieler bereits mehr angesagt, als es Stiche gibt, ist für den
 letzten Ansagenden **nichts** gesperrt – dann kann die Runde ohnehin nicht mehr
 aufgehen.
 
+## Gestaltung
+
+Vorbild ist kein App-Dashboard, sondern der Punktezettel selbst: ein Kontobuch
+auf dem Spieltisch.
+
+- **Farben** kommen vom Tisch: matter, dunkler Filz als Grund, gealtertes
+  Messing als einzige Akzentfarbe, Pergament für die Schrift. Keine Verläufe.
+  Die helle Variante ist dasselbe in Tinte auf Papier.
+- **Getrennt wird mit 1px-Haarlinien**, nicht mit Schlagschatten oder Kästen.
+  Es gibt bewusst keine „Karten": Abschnitte stehen direkt auf der Seite unter
+  einer gesetzten Rubrik.
+- **Typografie** zweigeteilt: [Cinzel](https://github.com/NDISCOVER/Cinzel) für
+  Überschriften, Rubriken und Knöpfe, [Inter](https://github.com/rsms/inter)
+  für jede Zahl. Am Tisch darf sich niemand verlesen, deshalb sind alle Werte
+  serifenlos, mit Tabellenziffern und gross gesetzt.
+- **Details statt Deko**: gepunktete Führungslinien wie im
+  Inhaltsverzeichnis, eine Strichliste für die Kartenzahl, ein Strich je Runde
+  als Fortschritt – und eine gesperrte Ansage wird diagonal durchgestrichen,
+  so wie man es auf Papier täte.
+- Beide Schriften liegen im Repo (siehe [fonts/](fonts/)), damit die App
+  offline gleich aussieht und beim Öffnen keine Verbindung zu einem CDN
+  aufbaut.
+
 ## Am Tisch gedacht
 
 - **Offline nutzbar.** Ein Service Worker liefert die App aus dem Cache aus, der

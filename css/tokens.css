@@ -1,43 +1,42 @@
-/* Design-Tokens: eine dunkle Grundpalette (Tisch am Abend) und eine helle
-   Variante. Alle Farben leben hier, damit die restlichen Stylesheets nur noch
-   auf Variablen zugreifen. */
+/* Die Palette kommt vom Spieltisch: dunkler, matter Filz als Grund, mattes
+   Messing als einzige Akzentfarbe, Pergament für die Schrift. Kein Verlauf,
+   kein Neon - Flächen sind flach, getrennt wird mit Haarlinien.
+
+   Die helle Variante ist Pergament: dieselbe Typografie, dieselben Linien,
+   nur Tinte auf Papier statt Kreide auf Filz. */
 
 :root {
   color-scheme: dark;
 
-  --bg: #0e0b1a;
-  --bg-glow: #1b1038;
-  --surface: #171330;
-  --surface-2: #211b3f;
-  --surface-3: #2c2451;
-  --border: #342c5c;
-  --border-soft: #272052;
+  --felt-deep: #0b1410;
+  --felt: #0f1a14;
+  --felt-raised: #15251c;
+  --felt-high: #1c3125;
 
-  --text: #f4f2ff;
-  --text-muted: #a79fd0;
-  --text-faint: #7a71a8;
+  --bg: var(--felt-deep);
+  --panel: var(--felt);
+  --raised: var(--felt-raised);
 
-  --primary: #8b5cf6;
-  --primary-strong: #7c3aed;
-  --primary-soft: #2a1f52;
-  --on-primary: #ffffff;
+  --ink: #f0e7d3;
+  --ink-dim: #a1977f;
+  --ink-faint: #6b644f;
+  --on-brass: #0b1410;
 
-  --accent: #fbbf24;
-  --accent-soft: #3a2d10;
+  --brass: #c2a059;
+  --brass-bright: #dcbe7d;
+  --brass-dim: #7e6930;
 
-  --good: #34d399;
-  --good-soft: #10382c;
-  --bad: #fb7185;
-  --bad-soft: #401a26;
+  /* Haarlinien - das einzige Trennmittel in dieser Oberfläche. */
+  --rule: #22362a;
+  --rule-strong: #3b5643;
 
-  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
-  --shadow-md: 0 8px 24px -8px rgb(0 0 0 / 0.6);
-  --shadow-lg: 0 20px 48px -16px rgb(0 0 0 / 0.7);
+  --loss: #cb7565;
+  --gain: var(--brass);
 
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
-  --radius-full: 999px;
+  /* Stärke der Papierkörnung über dem Hintergrund. */
+  --grain: 0.05;
+
+  --r: 2px;
 
   --space-1: 4px;
   --space-2: 8px;
@@ -47,82 +46,63 @@
   --space-6: 32px;
   --space-7: 48px;
 
-  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
-    Arial, sans-serif;
-  --font-numeric: ui-rounded, "SF Pro Rounded", "Segoe UI", Roboto, sans-serif;
+  /* Cinzel für alles Gesetzte, Inter für alles Gelesene und jede Zahl. */
+  --display: "Cinzel", "Iowan Old Style", Georgia, "Times New Roman", serif;
+  --ui: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial,
+    sans-serif;
 
-  --app-max: 620px;
-  --tap: 48px;
+  --app-max: 560px;
+  --tap: 52px;
 }
-
-/* Die helle Palette gilt in zwei Fällen: das System steht auf hell und es
-   wurde nichts anderes gewählt, oder sie ist im Menü fest eingestellt.
-   Ohne Präprozessor bleibt nur, den Block zweimal zu schreiben. */
 
 @media (prefers-color-scheme: light) {
   :root:not([data-theme="dark"]) {
     color-scheme: light;
 
-    --bg: #f6f4fb;
-    --bg-glow: #e9e2ff;
-    --surface: #ffffff;
-    --surface-2: #f2eefc;
-    --surface-3: #e7e0f8;
-    --border: #ddd5f0;
-    --border-soft: #e8e2f6;
+    --bg: #e5d9bd;
+    --panel: #ece2ca;
+    --raised: #e0d4b4;
 
-    --text: #1c1533;
-    --text-muted: #5f5686;
-    --text-faint: #8d85ad;
+    --ink: #1e180f;
+    --ink-dim: #574d3a;
+    --ink-faint: #8a7f66;
+    --on-brass: #f7f0dd;
 
-    --primary: #7c3aed;
-    --primary-strong: #6d28d9;
-    --primary-soft: #ece3ff;
-    --on-primary: #ffffff;
+    --brass: #8a6a22;
+    --brass-bright: #a4832f;
+    --brass-dim: #b5a271;
 
-    --accent: #b45309;
-    --accent-soft: #fdf0d5;
+    --rule: #c8b892;
+    --rule-strong: #a08f68;
 
-    --good: #047857;
-    --good-soft: #d9f5ea;
-    --bad: #be123c;
-    --bad-soft: #fde2e7;
+    --loss: #96301f;
+    --gain: #6d5417;
 
-    --shadow-sm: 0 1px 2px rgb(28 21 51 / 0.08);
-    --shadow-md: 0 8px 24px -10px rgb(28 21 51 / 0.22);
-    --shadow-lg: 0 20px 48px -20px rgb(28 21 51 / 0.28);
+    --grain: 0.1;
   }
 }
 
 :root[data-theme="light"] {
   color-scheme: light;
 
-  --bg: #f6f4fb;
-  --bg-glow: #e9e2ff;
-  --surface: #ffffff;
-  --surface-2: #f2eefc;
-  --surface-3: #e7e0f8;
-  --border: #ddd5f0;
-  --border-soft: #e8e2f6;
+  --bg: #e5d9bd;
+  --panel: #ece2ca;
+  --raised: #e0d4b4;
 
-  --text: #1c1533;
-  --text-muted: #5f5686;
-  --text-faint: #8d85ad;
+  --ink: #1e180f;
+  --ink-dim: #574d3a;
+  --ink-faint: #8a7f66;
+  --on-brass: #f7f0dd;
 
-  --primary: #7c3aed;
-  --primary-strong: #6d28d9;
-  --primary-soft: #ece3ff;
-  --on-primary: #ffffff;
+  --brass: #8a6a22;
+  --brass-bright: #a4832f;
+  --brass-dim: #b5a271;
 
-  --accent: #b45309;
-  --accent-soft: #fdf0d5;
+  --rule: #c8b892;
+  --rule-strong: #a08f68;
 
-  --good: #047857;
-  --good-soft: #d9f5ea;
-  --bad: #be123c;
-  --bad-soft: #fde2e7;
+  --loss: #96301f;
+  --gain: #6d5417;
 
-  --shadow-sm: 0 1px 2px rgb(28 21 51 / 0.08);
-  --shadow-md: 0 8px 24px -10px rgb(28 21 51 / 0.22);
-  --shadow-lg: 0 20px 48px -20px rgb(28 21 51 / 0.28);
+  --grain: 0.1;
 }
