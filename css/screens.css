@@ -128,10 +128,12 @@
 
 /* --- Ansagen ------------------------------------------------------------- */
 
-/* Die Tafel oben: alle Spieler der Runde in Ansage-Reihenfolge. */
+/* Die Tafel oben: alle Spieler der Runde in Ansage-Reihenfolge.
+   Rundum geschlossen - nur oben und unten liniert sieht an den beiden
+   Enden aus wie ein Fehler, besonders bei sechs schmalen Spalten. */
 .slate {
   display: flex;
-  border-block: 1px solid var(--ink);
+  border: 1px solid var(--ink);
 }
 
 .slate__seat {
@@ -150,16 +152,23 @@
   background: var(--sunk);
 }
 
+/* Bei sechs Spielern ist eine Spalte nur noch rund 55px breit. Kleiner
+   gesetzt, enger und ueber zwei Zeilen bleibt "Spieler 1" lesbar - sonst
+   steht bei allen sechs dasselbe "SPIELE..." und unterscheidet nichts
+   mehr. Laengere Namen brechen nach zwei Zeilen ab. */
 .slate__name {
-  display: block;
-  font-size: 0.625rem;
-  font-weight: 700;
-  letter-spacing: 0.11em;
-  text-transform: uppercase;
-  color: var(--dim);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  font-size: 0.5625rem;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+  color: var(--dim);
 }
 
 .slate__bid {
