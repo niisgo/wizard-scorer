@@ -3,7 +3,14 @@
 /* --- Titelseite ---------------------------------------------------------- */
 
 .wordmark {
-  padding-block: var(--space-5) var(--space-2);
+  padding-block: var(--space-2);
+}
+
+.wordmark__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-2);
 }
 
 .wordmark__eyebrow {
@@ -15,7 +22,8 @@
 }
 
 .wordmark__name {
-  margin-top: var(--space-2);
+  flex: 1;
+  min-width: 0;
   font-family: var(--display);
   font-weight: 400;
   font-size: clamp(3.5rem, 19vw, 5rem);

@@ -51,11 +51,7 @@ function announce({ title, subtitle }) {
 
 function paintTopbar({ title, subtitle, back, aside }) {
   clear(refs.topbar);
-  refs.topbar.classList.remove("topbar--bare");
   if (!title && !back && !aside) return;
-
-  // Nur ein Knopf, kein Titel: dann auch keine Trennlinie ziehen.
-  if (!title && !back) refs.topbar.classList.add("topbar--bare");
 
   const leading = back
     ? el(

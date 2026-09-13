@@ -16,7 +16,6 @@ export function startScreen() {
   const running = getGame();
 
   return {
-    aside: menuButton(),
     content: [wordmark(), running && resumeSection(running), playerPicker()],
     actions: [
       button(running ? "Neues Spiel" : "Weiter", {
@@ -35,7 +34,12 @@ export function startScreen() {
 function wordmark() {
   return el("div", { class: "wordmark" }, [
     el("p", { class: "wordmark__eyebrow", text: "Punkteblock" }),
-    el("h1", { class: "wordmark__name", text: "Wizard" }),
+    // Der Menüknopf steht auf der Höhe des Schriftzugs. Damit braucht die
+    // Titelseite keine eigene Kopfleiste und der Schriftzug rückt hoch.
+    el("div", { class: "wordmark__row" }, [
+      el("h1", { class: "wordmark__name", text: "Wizard" }),
+      menuButton(),
+    ]),
     el("div", { class: "wordmark__bar", "aria-hidden": "true" }),
     el("p", {
       class: "wordmark__lead",
