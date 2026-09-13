@@ -7,6 +7,13 @@
 
 /* --- Kopfzeile ----------------------------------------------------------- */
 
+/* Topbar, die nur den Menueknopf traegt: ohne Trennlinie, sonst steht
+   ueber dem Titelschriftzug eine Linie im Nichts. */
+.topbar--bare {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
 .topbar__row {
   display: flex;
   align-items: flex-start;
@@ -23,7 +30,7 @@
   font-family: var(--display);
   font-weight: 400;
   font-size: 1.5rem;
-  line-height: 1.1;
+  line-height: var(--lh-display);
   text-transform: uppercase;
   overflow: hidden;
   text-overflow: ellipsis;

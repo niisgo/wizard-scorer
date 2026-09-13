@@ -89,7 +89,7 @@ h3 {
 
 .topbar {
   flex: none;
-  padding: var(--space-4) var(--space-4) var(--space-3);
+  padding: var(--space-3) var(--space-4);
   background: var(--paper);
   border-bottom: 1px solid var(--ink);
 }

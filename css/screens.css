@@ -318,7 +318,7 @@
   font-family: var(--display);
   font-weight: 400;
   font-size: 1.25rem;
-  line-height: 1.1;
+  line-height: var(--lh-display);
   text-transform: uppercase;
   overflow: hidden;
   text-overflow: ellipsis;

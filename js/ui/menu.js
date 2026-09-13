@@ -1,6 +1,8 @@
-/* Das Menü der laufenden Partie: korrigieren, einstellen, abbrechen.
-   Liegt als Bottom-Sheet über dem Screen, damit es auch einhändig
-   erreichbar bleibt. */
+/* Das Menü: korrigieren, einstellen, abbrechen. Liegt als Bottom-Sheet
+   über dem Screen, damit es auch einhändig erreichbar bleibt.
+
+   Es ist auch auf der Titelseite erreichbar, wo noch gar keine Partie
+   läuft. Die Einträge, die eine Partie voraussetzen, entfallen dann. */
 
 import { append, clear, el } from "../dom.js";
 import { resume } from "../flow.js";
@@ -10,7 +12,7 @@ import { getGame, setGame } from "../store.js";
 import { THEMES, getTheme, setTheme } from "../theme.js";
 import * as wakeLock from "../wakelock.js";
 
-export function openGameMenu() {
+export function openMenu() {
   const dialog = el("dialog", { class: "sheet", "aria-label": "Menü" });
   const body = el("div", { class: "sheet__body" });
 
@@ -42,14 +44,19 @@ export function openGameMenu() {
 
 function renderMenu(body, { close }) {
   const game = getGame();
-  const undoable = lastScoredRound(game);
+  const undoable = game ? lastScoredRound(game) : null;
 
   clear(body);
   append(body, [
-    undoable
+    // Ohne laufende Partie gibt es nichts zurückzunehmen - dann fehlt die
+    // Zeile ganz, statt grau herumzustehen.
+    game
       ? action({
           label: "Letzte Wertung zurücknehmen",
-          hint: `Runde ${undoable} – die Ansagen bleiben stehen, die Stiche werden neu eingetragen.`,
+          hint: undoable
+            ? `Runde ${undoable} – die Ansagen bleiben stehen, die Stiche werden neu eingetragen.`
+            : "Noch keine Runde gewertet.",
+          disabled: !undoable,
           onSelect: () => {
             const next = undoLastScoredRound(getGame());
             if (next) setGame(next);
@@ -57,11 +64,7 @@ function renderMenu(body, { close }) {
             resume();
           },
         })
-      : action({
-          label: "Letzte Wertung zurücknehmen",
-          hint: "Noch keine Runde gewertet.",
-          disabled: true,
-        }),
+      : null,
 
     segment({
       label: "Design",
@@ -85,7 +88,7 @@ function renderMenu(body, { close }) {
         })
       : null,
 
-    dangerZone({ close }),
+    game ? dangerZone({ close }) : null,
   ]);
 }
 
@@ -211,7 +214,7 @@ export function menuButton() {
       class: "iconbtn",
       type: "button",
       "aria-label": "Menü",
-      onClick: openGameMenu,
+      onClick: openMenu,
     },
     svg,
   );

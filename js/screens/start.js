@@ -7,6 +7,7 @@ import { canInstall, promptInstall } from "../pwa.js";
 import { MAX_PLAYERS, MIN_PLAYERS, totalRounds } from "../rules.js";
 import { go } from "../router.js";
 import { getGame } from "../store.js";
+import { menuButton } from "../ui/menu.js";
 import { button, entry, section } from "../ui/widgets.js";
 
 let chosenCount = 4;
@@ -15,6 +16,7 @@ export function startScreen() {
   const running = getGame();
 
   return {
+    aside: menuButton(),
     content: [wordmark(), running && resumeSection(running), playerPicker()],
     actions: [
       button(running ? "Neues Spiel" : "Weiter", {
